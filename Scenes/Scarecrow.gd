@@ -11,6 +11,7 @@ extends RigidBody2D
 @export var maxChargeTime : float
 @export var returnToStandingTime : float
 @export var chargeSpriteDistanceMult : float
+@export var resetRotationSpeed: float
 
 var onFloor : bool = false
 var charging : bool = false
@@ -28,14 +29,26 @@ func _enter_tree() -> void:
 	distToBottom = (bottom.global_position - global_position).length()
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	sprite.global_rotation = bottom.global_rotation
 	
+	var appliedForce = false
+	
 	if Input.is_action_pressed("left"):
-		apply_force(Vector2.LEFT * rotateSpeed)
+		apply_force(Vector2.LEFT.rotated(global_rotation) * rotateSpeed)
+		appliedForce = true 
 		
 	if Input.is_action_pressed("right"):
-		apply_force(Vector2.RIGHT * rotateSpeed)
+		apply_force(Vector2.RIGHT.rotated(global_rotation) * rotateSpeed)
+		appliedForce = !appliedForce # If we had applied left, cancels out
+		
+	if !appliedForce and !charging:
+		if sprite.global_rotation_degrees < 0: # Counter Clockwise
+			apply_force(Vector2.RIGHT.rotated(global_rotation) * resetRotationSpeed)
+		elif sprite.global_rotation_degrees > 0:
+			apply_force(Vector2.LEFT.rotated(global_rotation) * resetRotationSpeed)
+			
+			
 		
 	if Input.is_action_pressed("jump") and onFloor:
 		charging = true

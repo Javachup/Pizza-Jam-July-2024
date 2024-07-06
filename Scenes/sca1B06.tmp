@@ -41,11 +41,10 @@ sprite = NodePath("Sprite2D")
 chargeCurve = SubResource("Curve_6spyt")
 returnToStandingCurve = SubResource("Curve_762m6")
 jumpForceRange = Vector2(20000, 70000)
-rotateSpeed = 150.0
+rotateSpeed = 100.0
 maxChargeTime = 1.0
 returnToStandingTime = 0.4
 chargeSpriteDistanceMult = 0.5
-resetRotationSpeed = 50.0
 
 [node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody"]
 texture = ExtResource("1_clvc5")
