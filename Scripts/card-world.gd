@@ -14,20 +14,29 @@ var suit:Suit = Suit.BACK
 var rank:int # 0=Ace, 12=King
 var team:Team
 
+var target:Card
+
 func update_card():
 	sprite.play(suit_to_string[suit])
 	sprite.frame = rank
+
+func set_target(potential_targets:Array[Card]):
+		var closest_dist = INF
+		var closest_card:Card = null
+		for c in potential_targets:
+			var dist = (position - c.position).length()
+			if dist < closest_dist:
+				closest_dist = dist
+				closest_card = c
+		target = closest_card
 
 func _ready():
 	update_card()
 
 func _physics_process(delta):
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction = Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+	if target == null: return
+
+	var dir = (target.position - position).normalized()
+	velocity = dir * SPEED
 
 	move_and_slide()

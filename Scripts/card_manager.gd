@@ -2,6 +2,9 @@ extends Node2D
 
 @export var card:PackedScene
 
+var blue_cards:Array[Card] = []
+var red_cards:Array[Card] = []
+
 func spawn_card(pos:Vector2, suit:Card.Suit, rank:int, team:Card.Team):
 	if rank < 0 or rank > 12:
 		printerr("Rank must be between 0 and 12!")
@@ -12,6 +15,15 @@ func spawn_card(pos:Vector2, suit:Card.Suit, rank:int, team:Card.Team):
 	new_card.rank = rank
 	new_card.team = team
 	new_card.position = pos
+
+	if team == Card.Team.BLUE:
+		blue_cards.append(new_card)
+		new_card.set_target(red_cards)
+
+	elif team == Card.Team.RED:
+		red_cards.append(new_card)
+		new_card.set_target(blue_cards)
+
 	add_child(new_card)
 
 func _unhandled_input(event):
