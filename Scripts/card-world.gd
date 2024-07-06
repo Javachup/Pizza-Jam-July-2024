@@ -7,6 +7,7 @@ const suit_to_string = { Suit.BACK: "back", Suit.CLUBS: "clubs", Suit.DIAMONDS: 
 enum Team { NONE = -1, BLUE, RED, GREEN, YELLOW }
 
 const SPEED = 300.0
+const CLOSEST_DIST = 50.0
 
 @onready var sprite = %AnimatedSprite2D
 
@@ -36,7 +37,10 @@ func _ready():
 func _physics_process(delta):
 	if target == null: return
 
-	var dir = (target.position - position).normalized()
-	velocity = dir * SPEED
+	var dir = target.position - position
+	if dir.length_squared() > CLOSEST_DIST * CLOSEST_DIST:
+		velocity = dir.normalized() * SPEED
+	else:
+		velocity = Vector2.ZERO
 
 	move_and_slide()

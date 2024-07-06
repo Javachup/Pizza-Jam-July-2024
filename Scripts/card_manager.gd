@@ -18,11 +18,14 @@ func spawn_card(pos:Vector2, suit:Card.Suit, rank:int, team:Card.Team):
 
 	if team == Card.Team.BLUE:
 		blue_cards.append(new_card)
-		new_card.set_target(red_cards)
 
 	elif team == Card.Team.RED:
 		red_cards.append(new_card)
-		new_card.set_target(blue_cards)
+
+	for c in blue_cards:
+		c.set_target(red_cards)
+	for c in red_cards:
+		c.set_target(blue_cards)
 
 	add_child(new_card)
 
