@@ -1,0 +1,273 @@
+[gd_scene load_steps=61 format=3 uid="uid://dfnirbg0a0sbk"]
+
+[ext_resource type="Texture2D" uid="uid://c3qeerhgiarmq" path="res://Art/Playing Cards/card-back1.png" id="1_ijbps"]
+[ext_resource type="Script" path="res://Scripts/card-world.gd" id="1_r10j6"]
+[ext_resource type="Texture2D" uid="uid://diaojobadf05l" path="res://Art/Playing Cards/card-back2.png" id="2_gok77"]
+[ext_resource type="Texture2D" uid="uid://dy1u28showuke" path="res://Art/Playing Cards/card-back3.png" id="3_og6p5"]
+[ext_resource type="Texture2D" uid="uid://s41io6214cmq" path="res://Art/Playing Cards/card-back4.png" id="4_sapwv"]
+[ext_resource type="Texture2D" uid="uid://ciwjpitgteqri" path="res://Art/Playing Cards/card-blank.png" id="5_eyv4h"]
+[ext_resource type="Texture2D" uid="uid://bua6ucv4237rq" path="res://Art/Playing Cards/card-clubs-1.png" id="6_ltwtm"]
+[ext_resource type="Texture2D" uid="uid://bfolkcbsvds7s" path="res://Art/Playing Cards/card-clubs-2.png" id="7_mcqic"]
+[ext_resource type="Texture2D" uid="uid://c0duipg3nk8mn" path="res://Art/Playing Cards/card-clubs-3.png" id="8_xxdmk"]
+[ext_resource type="Texture2D" uid="uid://b6erc63j3hbpw" path="res://Art/Playing Cards/card-clubs-4.png" id="9_of2ru"]
+[ext_resource type="Texture2D" uid="uid://btrg2n3ee8t0a" path="res://Art/Playing Cards/card-clubs-5.png" id="10_24tjl"]
+[ext_resource type="Texture2D" uid="uid://l5edrlrcsyk3" path="res://Art/Playing Cards/card-clubs-6.png" id="11_lsgtb"]
+[ext_resource type="Texture2D" uid="uid://dxiucrbxv7d4h" path="res://Art/Playing Cards/card-clubs-7.png" id="12_4w7bi"]
+[ext_resource type="Texture2D" uid="uid://cfo6076yowj1i" path="res://Art/Playing Cards/card-clubs-8.png" id="13_tvm6u"]
+[ext_resource type="Texture2D" uid="uid://djevjrdqjbin5" path="res://Art/Playing Cards/card-clubs-9.png" id="14_mdv0r"]
+[ext_resource type="Texture2D" uid="uid://bordmfsp7a7ye" path="res://Art/Playing Cards/card-clubs-10.png" id="15_07pwa"]
+[ext_resource type="Texture2D" uid="uid://dgpingeh0icn7" path="res://Art/Playing Cards/card-clubs-11.png" id="16_eu5tk"]
+[ext_resource type="Texture2D" uid="uid://by58w68h2vw45" path="res://Art/Playing Cards/card-clubs-12.png" id="17_abxp6"]
+[ext_resource type="Texture2D" uid="uid://b6rpu0of56jcn" path="res://Art/Playing Cards/card-clubs-13.png" id="18_d0uqd"]
+[ext_resource type="Texture2D" uid="uid://c4fnf2vqc1tjq" path="res://Art/Playing Cards/card-diamonds-1.png" id="19_1nt6h"]
+[ext_resource type="Texture2D" uid="uid://bi56r6wpc28x1" path="res://Art/Playing Cards/card-diamonds-2.png" id="20_4htqw"]
+[ext_resource type="Texture2D" uid="uid://cccaoyapljyxn" path="res://Art/Playing Cards/card-diamonds-3.png" id="21_o11wr"]
+[ext_resource type="Texture2D" uid="uid://db5v0a52yok53" path="res://Art/Playing Cards/card-diamonds-4.png" id="22_n3o5q"]
+[ext_resource type="Texture2D" uid="uid://bsa4qjvsewb4x" path="res://Art/Playing Cards/card-diamonds-5.png" id="23_vs1m1"]
+[ext_resource type="Texture2D" uid="uid://dk080igavfncc" path="res://Art/Playing Cards/card-diamonds-6.png" id="24_r0ud8"]
+[ext_resource type="Texture2D" uid="uid://djqjj3a01m3w2" path="res://Art/Playing Cards/card-diamonds-7.png" id="25_18imi"]
+[ext_resource type="Texture2D" uid="uid://8v2sdb402nd6" path="res://Art/Playing Cards/card-diamonds-8.png" id="26_jrlwv"]
+[ext_resource type="Texture2D" uid="uid://c0nvd0gves1k0" path="res://Art/Playing Cards/card-diamonds-9.png" id="27_p08ci"]
+[ext_resource type="Texture2D" uid="uid://bf3slh6rja8sa" path="res://Art/Playing Cards/card-diamonds-10.png" id="28_1ut4q"]
+[ext_resource type="Texture2D" uid="uid://cs8qfivvfkwrb" path="res://Art/Playing Cards/card-diamonds-11.png" id="29_b80ic"]
+[ext_resource type="Texture2D" uid="uid://buf8hreednm1q" path="res://Art/Playing Cards/card-diamonds-12.png" id="30_0qekl"]
+[ext_resource type="Texture2D" uid="uid://b8hot64ql8dmi" path="res://Art/Playing Cards/card-diamonds-13.png" id="31_ryteq"]
+[ext_resource type="Texture2D" uid="uid://dpa0sl10n1q1j" path="res://Art/Playing Cards/card-hearts-1.png" id="32_xmjgr"]
+[ext_resource type="Texture2D" uid="uid://c26ibxvtn81xt" path="res://Art/Playing Cards/card-hearts-2.png" id="33_30d4c"]
+[ext_resource type="Texture2D" uid="uid://bkig2qp6irkem" path="res://Art/Playing Cards/card-hearts-3.png" id="34_e4mih"]
+[ext_resource type="Texture2D" uid="uid://eba80u7ruc8q" path="res://Art/Playing Cards/card-hearts-4.png" id="35_0q7na"]
+[ext_resource type="Texture2D" uid="uid://cje2csbh8rkso" path="res://Art/Playing Cards/card-hearts-5.png" id="36_v4du7"]
+[ext_resource type="Texture2D" uid="uid://t22lphk2i4mu" path="res://Art/Playing Cards/card-hearts-6.png" id="37_nqy3o"]
+[ext_resource type="Texture2D" uid="uid://bhbbyjejognal" path="res://Art/Playing Cards/card-hearts-7.png" id="38_rckry"]
+[ext_resource type="Texture2D" uid="uid://dtkibahxlg4yr" path="res://Art/Playing Cards/card-hearts-8.png" id="39_5ww5a"]
+[ext_resource type="Texture2D" uid="uid://bavcwbcybptsa" path="res://Art/Playing Cards/card-hearts-9.png" id="40_uvda2"]
+[ext_resource type="Texture2D" uid="uid://ds1qwgnu34wx" path="res://Art/Playing Cards/card-hearts-10.png" id="41_j78w7"]
+[ext_resource type="Texture2D" uid="uid://by1a8mfx0deyb" path="res://Art/Playing Cards/card-hearts-11.png" id="42_1kedl"]
+[ext_resource type="Texture2D" uid="uid://0bfq0h73j55w" path="res://Art/Playing Cards/card-hearts-12.png" id="43_8avrt"]
+[ext_resource type="Texture2D" uid="uid://d26gev4jlj5rb" path="res://Art/Playing Cards/card-hearts-13.png" id="44_fofpj"]
+[ext_resource type="Texture2D" uid="uid://y2l5qf3j1pt1" path="res://Art/Playing Cards/card-spades-1.png" id="45_2h01x"]
+[ext_resource type="Texture2D" uid="uid://5lsjwxqyuf5w" path="res://Art/Playing Cards/card-spades-2.png" id="46_c5nux"]
+[ext_resource type="Texture2D" uid="uid://bk6u2sp7rbyix" path="res://Art/Playing Cards/card-spades-3.png" id="47_ifw8q"]
+[ext_resource type="Texture2D" uid="uid://qiksovryysdv" path="res://Art/Playing Cards/card-spades-4.png" id="48_kisp1"]
+[ext_resource type="Texture2D" uid="uid://cddaqu1braffo" path="res://Art/Playing Cards/card-spades-5.png" id="49_80fg4"]
+[ext_resource type="Texture2D" uid="uid://dlrir6bjf8jg3" path="res://Art/Playing Cards/card-spades-6.png" id="50_pht7x"]
+[ext_resource type="Texture2D" uid="uid://dn6igfjv17bwn" path="res://Art/Playing Cards/card-spades-7.png" id="51_rgqp7"]
+[ext_resource type="Texture2D" uid="uid://cpgewnxnxd1ua" path="res://Art/Playing Cards/card-spades-8.png" id="52_2v2nc"]
+[ext_resource type="Texture2D" uid="uid://b3psjp6vh8340" path="res://Art/Playing Cards/card-spades-9.png" id="53_vni8r"]
+[ext_resource type="Texture2D" uid="uid://sx8vpp437rdx" path="res://Art/Playing Cards/card-spades-10.png" id="54_higt4"]
+[ext_resource type="Texture2D" uid="uid://bhsnc21ndeek2" path="res://Art/Playing Cards/card-spades-11.png" id="55_awdc2"]
+[ext_resource type="Texture2D" uid="uid://cf4nlggs8sdr" path="res://Art/Playing Cards/card-spades-12.png" id="56_7j8vc"]
+[ext_resource type="Texture2D" uid="uid://dek8nd56h0ane" path="res://Art/Playing Cards/card-spades-13.png" id="57_up1xm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wtswu"]
+size = Vector2(96, 144)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b2x5c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ijbps")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_gok77")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_og6p5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_sapwv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_eyv4h")
+}],
+"loop": true,
+"name": &"back",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_ltwtm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_mcqic")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_xxdmk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_of2ru")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_24tjl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_lsgtb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_4w7bi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_tvm6u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_mdv0r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_07pwa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_eu5tk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_abxp6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_d0uqd")
+}],
+"loop": true,
+"name": &"clubs",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_1nt6h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_4htqw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_o11wr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_n3o5q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_vs1m1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_r0ud8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_18imi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_jrlwv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_p08ci")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_1ut4q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_b80ic")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_0qekl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_ryteq")
+}],
+"loop": true,
+"name": &"diamonds",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("32_xmjgr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_30d4c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_e4mih")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_0q7na")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_v4du7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_nqy3o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_rckry")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_5ww5a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_uvda2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_j78w7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_1kedl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_8avrt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_fofpj")
+}],
+"loop": true,
+"name": &"hearts",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("45_2h01x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_c5nux")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_ifw8q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_kisp1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_80fg4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_pht7x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_rgqp7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_2v2nc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_vni8r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_higt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_awdc2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_7j8vc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_up1xm")
+}],
+"loop": true,
+"name": &"spades",
+"speed": 0.0
+}]
+
+[node name="Card" type="CharacterBody2D"]
+script = ExtResource("1_r10j6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_wtswu")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_b2x5c")
+animation = &"clubs"
