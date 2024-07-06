@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=3 uid="uid://yscvb4a5hc33"]
+
+[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Art/icon.svg" id="1_8xpj0"]
+[ext_resource type="Script" path="res://First/FirstScarecrow.gd" id="2_vbjio"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pk88t"]
+size = Vector2(10000, 20)
+
+[sub_resource type="Curve" id="Curve_6spyt"]
+_data = [Vector2(0, 0), 0.0, 2.50802, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_762m6"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), -0.917402, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r442b"]
+radius = 69.81
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xsmsu"]
+radius = 20.08
+
+[node name="ScarecrowPrototype" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["terrain"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(507, 625)
+shape = SubResource("RectangleShape2D_pk88t")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/CollisionShape2D"]
+scale = Vector2(29.4962, 0.184251)
+texture = ExtResource("1_8xpj0")
+
+[node name="ScarecrowBody" type="RigidBody2D" parent="." node_paths=PackedStringArray("bottom", "sprite")]
+position = Vector2(530, 262)
+gravity_scale = 0.0
+script = ExtResource("2_vbjio")
+bottom = NodePath("ScarecrowStickBottom")
+sprite = NodePath("Sprite2D")
+chargeCurve = SubResource("Curve_6spyt")
+returnToStandingCurve = SubResource("Curve_762m6")
+jumpForceRange = Vector2(20000, 70000)
+rotateSpeed = 150.0
+maxChargeTime = 1.0
+returnToStandingTime = 0.4
+chargeSpriteDistanceMult = 0.5
+resetRotationSpeed = 50.0
+
+[node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody"]
+texture = ExtResource("1_8xpj0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScarecrowBody"]
+shape = SubResource("CircleShape2D_r442b")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="ScarecrowBody"]
+node_a = NodePath("..")
+node_b = NodePath("../ScarecrowStickBottom")
+softness = 1.0
+
+[node name="ScarecrowStickBottom" type="RigidBody2D" parent="ScarecrowBody"]
+position = Vector2(0, 210)
+can_sleep = false
+max_contacts_reported = 5
+contact_monitor = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody/ScarecrowStickBottom"]
+scale = Vector2(0.355, 0.355)
+texture = ExtResource("1_8xpj0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScarecrowBody/ScarecrowStickBottom"]
+shape = SubResource("CircleShape2D_xsmsu")
+
+[connection signal="body_entered" from="ScarecrowBody/ScarecrowStickBottom" to="ScarecrowBody" method="on_bottom_collision"]
