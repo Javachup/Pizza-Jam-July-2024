@@ -1,0 +1,66 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0ytpo4ln6ls3"]
+
+[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Art/icon.svg" id="1_xctm7"]
+[ext_resource type="Script" path="res://AdvancedMovement/AdvancedMovementScarecrow.gd" id="2_ss42c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pk88t"]
+size = Vector2(10000, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r442b"]
+radius = 69.81
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xsmsu"]
+radius = 20.08
+
+[node name="ScarecrowPrototype" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["terrain"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(507, 625)
+shape = SubResource("RectangleShape2D_pk88t")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/CollisionShape2D"]
+scale = Vector2(29.4962, 0.184251)
+texture = ExtResource("1_xctm7")
+
+[node name="ScarecrowBody" type="RigidBody2D" parent="." node_paths=PackedStringArray("bottom", "sprite")]
+position = Vector2(530, 262)
+gravity_scale = 0.0
+script = ExtResource("2_ss42c")
+bottom = NodePath("ScarecrowStickBottom")
+sprite = NodePath("Sprite2D")
+jumpForceRange = Vector2(20000, 70000)
+rotateSpeed = 5000.0
+maxChargeAngle = 45.0
+returnToStandingTime = 0.4
+chargeSpriteDistanceMult = 0.5
+resetRotationSpeed = 300.0
+correctionSpeed = 100.0
+landingDamp = 0.3
+
+[node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody"]
+texture = ExtResource("1_xctm7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScarecrowBody"]
+shape = SubResource("CircleShape2D_r442b")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="ScarecrowBody"]
+node_a = NodePath("..")
+node_b = NodePath("../ScarecrowStickBottom")
+softness = 1.0
+
+[node name="ScarecrowStickBottom" type="RigidBody2D" parent="ScarecrowBody"]
+position = Vector2(0, 210)
+can_sleep = false
+max_contacts_reported = 5
+contact_monitor = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody/ScarecrowStickBottom"]
+scale = Vector2(0.355, 0.355)
+texture = ExtResource("1_xctm7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScarecrowBody/ScarecrowStickBottom"]
+shape = SubResource("CircleShape2D_xsmsu")
+
+[connection signal="body_entered" from="ScarecrowBody/ScarecrowStickBottom" to="ScarecrowBody" method="on_bottom_collision"]

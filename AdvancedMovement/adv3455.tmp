@@ -32,10 +32,11 @@ bottom = NodePath("ScarecrowStickBottom")
 sprite = NodePath("Sprite2D")
 jumpForceRange = Vector2(20000, 70000)
 rotateSpeed = 5000.0
-maxChargeTime = 2.0
+maxChargeAngle = 45.0
 returnToStandingTime = 0.4
 chargeSpriteDistanceMult = 0.5
-resetRotationSpeed = 200.0
+resetRotationSpeed = 300.0
+correctionSpeed = 100.0
 
 [node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody"]
 texture = ExtResource("1_xctm7")

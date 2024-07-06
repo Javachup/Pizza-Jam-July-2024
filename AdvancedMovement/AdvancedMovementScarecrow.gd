@@ -8,10 +8,12 @@ extends RigidBody2D
 
 @export var jumpForceRange : Vector2
 @export var rotateSpeed: float
-@export var maxChargeTime : float
+@export var maxChargeAngle : float
 @export var returnToStandingTime : float
 @export var chargeSpriteDistanceMult : float
 @export var resetRotationSpeed: float
+@export var correctionSpeed : float
+@export var landingDamp : float
 
 var onFloor : bool = false
 var charging : bool = false
@@ -46,10 +48,18 @@ func _physics_process(delta: float) -> void:
 		charging = true
 		
 	if charging:
-		if (sprite.global_rotation_degrees < 0 and leftCharging) or (sprite.global_rotation_degrees > 0 and rightCharging):
-			chargeTime += delta
-			if chargeTime >= maxChargeTime:
-				linear_velocity = Vector2.ZERO
+		#if (sprite.global_rotation_degrees < 0 and leftCharging) or (sprite.global_rotation_degrees > 0 and rightCharging):
+			#chargeTime += delta
+			#if chargeTime >= maxChargeTime:
+				#linear_velocity = Vector2.ZERO
+		
+		if leftCharging and sprite.global_rotation_degrees <= -maxChargeAngle:
+			linear_velocity = Vector2.ZERO
+			#apply_force(Vector2.RIGHT.rotated(global_rotation) * correctionSpeed)
+			
+		elif rightCharging and sprite.global_rotation_degrees >= maxChargeAngle:
+			linear_velocity = Vector2.ZERO
+			#pass
 		
 	if (Input.is_action_just_released("right") or Input.is_action_just_released("left")) and charging:
 		linear_velocity = Vector2.ZERO
@@ -105,7 +115,7 @@ func _physics_process(delta: float) -> void:
 
 func jump():
 	var dir = (global_position - bottom.global_position).normalized()
-	var jumpForce = lerpf(jumpForceRange.x, jumpForceRange.y, clampf(chargeTime / maxChargeTime, 0, 1))
+	var jumpForce = lerpf(jumpForceRange.x, jumpForceRange.y, clampf(abs(sprite.global_rotation_degrees) / maxChargeAngle, 0, 1))
 	apply_force(dir * jumpForce)
 	charging = false
 	onFloor = false
@@ -123,6 +133,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 func on_bottom_collision(body: Node):
 	if body.is_in_group("terrain"):
 		onFloor = true
+		linear_velocity *= landingDamp
 		#stick_bottom()
 		pass
 	pass
