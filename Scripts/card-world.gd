@@ -1,7 +1,10 @@
 extends CharacterBody2D
+class_name Card
 
 enum Suit { BACK = -1, CLUBS, DIAMONDS, HEARTS, SPADES }
 const suit_to_string = { Suit.BACK: "back", Suit.CLUBS: "clubs", Suit.DIAMONDS: "diamonds", Suit.HEARTS: "hearts", Suit.SPADES: "spades"}
+
+enum Team { NONE = -1, BLUE, RED, GREEN, YELLOW }
 
 const SPEED = 300.0
 
@@ -9,14 +12,13 @@ const SPEED = 300.0
 
 var suit:Suit = Suit.BACK
 var rank:int # 0=Ace, 12=King
+var team:Team
 
 func update_card():
 	sprite.play(suit_to_string[suit])
 	sprite.frame = rank
 
 func _ready():
-	suit = randi_range(0, 3)
-	rank = randi_range(0, 12)
 	update_card()
 
 func _physics_process(delta):

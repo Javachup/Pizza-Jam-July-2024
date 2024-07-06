@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyfqy7bc5ihfl"]
+
+[ext_resource type="Script" path="res://Scripts/card_manager.gd" id="1_pl3nc"]
+[ext_resource type="PackedScene" uid="uid://dfnirbg0a0sbk" path="res://Scenes/card-world.tscn" id="2_hrppo"]
+
+[node name="CardManager" type="Node2D"]
+script = ExtResource("1_pl3nc")
+card = ExtResource("2_hrppo")

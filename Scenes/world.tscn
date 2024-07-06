@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bdlg0wo080egu"]
 
-[ext_resource type="PackedScene" uid="uid://dfnirbg0a0sbk" path="res://Scenes/card-world.tscn" id="1_d05wa"]
+[ext_resource type="PackedScene" uid="uid://cyfqy7bc5ihfl" path="res://Scenes/card_manager.tscn" id="1_qs5gy"]
 
 [node name="Root" type="Node"]
 
@@ -9,7 +9,7 @@
 [node name="Camera2D" type="Camera2D" parent="World"]
 zoom = Vector2(0.5, 0.5)
 
-[node name="Card" parent="World" instance=ExtResource("1_d05wa")]
+[node name="CardManager" parent="World" instance=ExtResource("1_qs5gy")]
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
