@@ -35,9 +35,11 @@ rotateSpeed = 5000.0
 maxChargeAngle = 45.0
 returnToStandingTime = 0.4
 chargeSpriteDistanceMult = 0.5
-resetRotationSpeed = 300.0
+resetRotationSpeed = 100.0
 correctionSpeed = 100.0
 landingDamp = 0.3
+superJumpLinearDamp = 100.0
+superJumpPower = 100000.0
 
 [node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody"]
 texture = ExtResource("1_xctm7")
@@ -48,7 +50,6 @@ shape = SubResource("CircleShape2D_r442b")
 [node name="PinJoint2D" type="PinJoint2D" parent="ScarecrowBody"]
 node_a = NodePath("..")
 node_b = NodePath("../ScarecrowStickBottom")
-softness = 1.0
 
 [node name="ScarecrowStickBottom" type="RigidBody2D" parent="ScarecrowBody"]
 position = Vector2(0, 210)
@@ -62,5 +63,9 @@ texture = ExtResource("1_xctm7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScarecrowBody/ScarecrowStickBottom"]
 shape = SubResource("CircleShape2D_xsmsu")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(584, 76)
+zoom = Vector2(0.505, 0.505)
 
 [connection signal="body_entered" from="ScarecrowBody/ScarecrowStickBottom" to="ScarecrowBody" method="on_bottom_collision"]

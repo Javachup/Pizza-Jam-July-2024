@@ -14,6 +14,8 @@ extends RigidBody2D
 @export var resetRotationSpeed: float
 @export var correctionSpeed : float
 @export var landingDamp : float
+@export var superJumpLinearDamp : float
+@export var superJumpPower : float
 
 var onFloor : bool = false
 var charging : bool = false
@@ -29,9 +31,14 @@ var spriteLoggedDist : float = 0
 var leftCharging = false
 var rightCharging = false
 
+var chargingSuperJump = false
+
+var startLinearDamp : float
+
 
 func _enter_tree() -> void:
 	distToBottom = (bottom.global_position - global_position).length()
+	startLinearDamp = linear_damp
 
 
 func _physics_process(delta: float) -> void:
@@ -46,6 +53,15 @@ func _physics_process(delta: float) -> void:
 		apply_force(Vector2.LEFT.rotated(global_rotation) * rotateSpeed)
 		leftCharging = true
 		charging = true
+		
+	if Input.is_action_just_pressed("jump") and onFloor:
+		chargingSuperJump = true
+		
+	if Input.is_action_just_released("jump") and chargingSuperJump:
+		chargingSuperJump = false
+		linear_velocity = Vector2.ZERO
+		linear_damp = startLinearDamp
+		jump_with_dir(superJumpPower, Vector2.UP)
 		
 	if charging:
 		#if (sprite.global_rotation_degrees < 0 and leftCharging) or (sprite.global_rotation_degrees > 0 and rightCharging):
@@ -64,7 +80,7 @@ func _physics_process(delta: float) -> void:
 	if (Input.is_action_just_released("right") or Input.is_action_just_released("left")) and charging:
 		linear_velocity = Vector2.ZERO
 		charging = false
-		jump()
+		jump(lerpf(jumpForceRange.x, jumpForceRange.y, clampf(abs(sprite.global_rotation_degrees) / maxChargeAngle, 0, 1)))
 		
 	if sprite.global_rotation_degrees < 0 and (rightCharging or !charging): # Counter Clockwise
 		apply_force(Vector2.RIGHT.rotated(global_rotation) * resetRotationSpeed)
@@ -72,6 +88,13 @@ func _physics_process(delta: float) -> void:
 		apply_force(Vector2.LEFT.rotated(global_rotation) * resetRotationSpeed)
 			
 			
+	if onFloor and chargingSuperJump:
+		bottom.apply_force(Vector2.DOWN * 1000000)
+		apply_force(Vector2.UP * 100000)
+		linear_damp = superJumpLinearDamp
+		#bottom.freeze
+		pass
+		
 		
 		
 	
@@ -103,9 +126,9 @@ func _physics_process(delta: float) -> void:
 		#sprite.global_position = global_position.lerp(global_position + dirToBottom * distToBottom * chargeSpriteDistanceMult, chargeCurve.sample(clampf(chargeTime / maxChargeTime, 0, 1)))
 		#
 		#
-	if(Input.is_action_just_released("jump") and charging):
-		jump()
-		
+	#if(Input.is_action_just_released("jump") and charging):
+		#jump(lerpf(jumpForceRange.x, jumpForceRange.y, clampf(abs(sprite.global_rotation_degrees) / maxChargeAngle, 0, 1)))
+		#
 	#if onFloor == false and charging == false:
 		#var spriteInitialPos : Vector2 = global_position + (bottom.global_position - global_position).normalized() * spriteLoggedDist
 		#sprite.global_position = lerp(spriteInitialPos, global_position, returnToStandingCurve.sample(clamp(standingReturnTimePassed / returnToStandingTime, 0, 1)))
@@ -113,9 +136,12 @@ func _physics_process(delta: float) -> void:
 	#pass
 
 
-func jump():
+func jump(jumpForce : float):
 	var dir = (global_position - bottom.global_position).normalized()
-	var jumpForce = lerpf(jumpForceRange.x, jumpForceRange.y, clampf(abs(sprite.global_rotation_degrees) / maxChargeAngle, 0, 1))
+	jump_with_dir(jumpForce, dir)
+	
+	
+func jump_with_dir(jumpForce : float, dir : Vector2):
 	apply_force(dir * jumpForce)
 	charging = false
 	onFloor = false
