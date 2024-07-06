@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://dfnirbg0a0sbk"]
+[gd_scene load_steps=63 format=3 uid="uid://dfnirbg0a0sbk"]
 
 [ext_resource type="Texture2D" uid="uid://c3qeerhgiarmq" path="res://Art/Playing Cards/card-back1.png" id="1_ijbps"]
 [ext_resource type="Script" path="res://Scripts/card-world.gd" id="1_r10j6"]
@@ -261,6 +261,20 @@ animations = [{
 "speed": 0.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7bp2u"]
+bg_color = Color(0.6, 0.6, 0.6, 0.458824)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0li3i"]
+bg_color = Color(0.95, 0.19, 0.253333, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [node name="Card" type="CharacterBody2D"]
 collision_layer = 0
 collision_mask = 0
@@ -288,5 +302,17 @@ polygon = PackedVector2Array(50, 0, 150, -50, 150, 50)
 unique_name_in_owner = true
 wait_time = 0.5
 one_shot = true
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+offset_left = -53.0
+offset_top = 77.0
+offset_right = 54.0
+offset_bottom = 88.0
+size_flags_horizontal = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_7bp2u")
+theme_override_styles/fill = SubResource("StyleBoxFlat_0li3i")
+value = 50.0
+show_percentage = false
 
 [connection signal="timeout" from="Attack/AttackTimer" to="." method="_on_attack_timer_timeout"]

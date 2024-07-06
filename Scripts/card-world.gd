@@ -7,13 +7,14 @@ const suit_to_string = { Suit.BACK: "back", Suit.CLUBS: "clubs", Suit.DIAMONDS: 
 enum Team { NONE = -1, BLUE, RED, GREEN, YELLOW }
 
 const SPEED = 300.0
-const CLOSEST_DIST = 50.0
+const CLOSEST_DIST = 75.0
 const SMALLER_SIZE = 0.8
 const SMALLER_SPEED = 0.1
 
 @onready var sprite = %AnimatedSprite2D
 @onready var attack_area = %Attack
 @onready var attack_timer = %AttackTimer
+@onready var health_bar = %HealthBar
 
 var suit:Suit = Suit.BACK
 var rank:int # 0=Ace, 12=King
@@ -21,8 +22,8 @@ var team:Team
 
 var health := 100.0
 var is_dead:bool :
-	get: return health < 0
-var attack_damage := 100.0
+	get: return health <= 0
+var attack_damage := 10.0
 
 var can_attack := true
 
@@ -87,7 +88,10 @@ func attack(target:Vector2):
 func _ready():
 	update_card()
 
-func _physics_process(delta):
+func _process(_delta):
+	health_bar.value = health
+
+func _physics_process(_delta):
 	if is_dead:
 		scale = Vector2.ONE * lerp(scale.x, SMALLER_SIZE, SMALLER_SPEED)
 	else:
