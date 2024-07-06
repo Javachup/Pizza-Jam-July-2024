@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdlg0wo080egu"]
+[gd_scene load_steps=3 format=3 uid="uid://bdlg0wo080egu"]
 
 [ext_resource type="PackedScene" uid="uid://cyfqy7bc5ihfl" path="res://Scenes/card_manager.tscn" id="1_qs5gy"]
+[ext_resource type="PackedScene" uid="uid://iu3pjblgnega" path="res://Scenes/ui_card_manager.tscn" id="2_yvvr3"]
 
 [node name="Root" type="Node"]
 
@@ -14,5 +15,15 @@ zoom = Vector2(0.5, 0.5)
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+
+[node name="UICardManager" parent="UI" instance=ExtResource("2_yvvr3")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -328.0
+offset_top = 409.0
+offset_right = 334.0
+offset_bottom = 820.0

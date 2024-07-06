@@ -10,11 +10,14 @@ const SPEED = 300.0
 const CLOSEST_DIST = 75.0
 const SMALLER_SIZE = 0.8
 const SMALLER_SPEED = 0.1
+const BLUE_COLOR = Color("196bbf")
+const RED_COLOR = Color("bf1929")
 
 @onready var sprite = %AnimatedSprite2D
 @onready var attack_area = %Attack
 @onready var attack_timer = %AttackTimer
 @onready var health_bar = %HealthBar
+@onready var outline = %Outline
 
 var suit:Suit = Suit.BACK
 var rank:int # 0=Ace, 12=King
@@ -31,15 +34,17 @@ var target:Card
 
 signal died(card:Card)
 
-func damage(damage:float):
+func damage(damage_amount:float):
 	if is_dead: return
 
-	health -= damage
+	health -= damage_amount
 
 	if is_dead:
 		update_card()
 		died.emit(self)
+		outline.visible = false
 
+@warning_ignore("shadowed_variable")
 func set_card(suit:Suit, rank:int, team:Team):
 	self.suit = suit
 	self.rank = rank
@@ -57,10 +62,12 @@ func update_card():
 	if team == Team.BLUE:
 		set_collision_layer_value(1, true)
 		attack_area.set_collision_mask_value(2, true)
+		outline.modulate = BLUE_COLOR
 
 	elif team == Team.RED:
 		set_collision_layer_value(2, true)
 		attack_area.set_collision_mask_value(1, true)
+		outline.modulate = RED_COLOR
 
 	else: printerr("No team!")
 
@@ -74,6 +81,7 @@ func set_target(potential_targets:Array[Card]):
 				closest_card = c
 		target = closest_card
 
+@warning_ignore("shadowed_variable")
 func attack(target:Vector2):
 	print("attack!")
 	attack_area.look_at(target)
