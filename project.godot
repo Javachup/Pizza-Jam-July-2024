@@ -32,6 +32,11 @@ spawn_card_alt={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="BlueCard"
+2d_physics/layer_2="RedCard"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

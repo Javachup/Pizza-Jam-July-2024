@@ -264,6 +264,8 @@ animations = [{
 [node name="Card" type="CharacterBody2D"]
 collision_layer = 0
 collision_mask = 0
+floor_stop_on_slope = false
+floor_block_on_wall = false
 script = ExtResource("1_r10j6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -273,3 +275,18 @@ shape = SubResource("RectangleShape2D_wtswu")
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_b2x5c")
 animation = &"clubs"
+
+[node name="Attack" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 0
+
+[node name="AttackShape" type="CollisionPolygon2D" parent="Attack"]
+polygon = PackedVector2Array(50, 0, 150, -50, 150, 50)
+
+[node name="AttackTimer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="Attack/AttackTimer" to="." method="_on_attack_timer_timeout"]

@@ -11,14 +11,12 @@ func spawn_card(pos:Vector2, suit:Card.Suit, rank:int, team:Card.Team):
 		return
 
 	var new_card = card.instantiate() as Card
-	new_card.suit = suit
-	new_card.rank = rank
-	new_card.team = team
+	new_card.set_card(suit, rank, team)
 	new_card.position = pos
+	new_card.died.connect(_on_card_died)
 
 	if team == Card.Team.BLUE:
 		blue_cards.append(new_card)
-
 	elif team == Card.Team.RED:
 		red_cards.append(new_card)
 
@@ -37,3 +35,9 @@ func _unhandled_input(event):
 	if event.is_action_pressed("spawn_card_alt"):
 		var pos = get_global_mouse_position()
 		spawn_card(pos, randi_range(0, 3), randi_range(0, 12), Card.Team.RED)
+
+func _on_card_died(card:Card):
+	if card.team == Card.Team.BLUE:
+		blue_cards.erase(card)
+	elif card.team == Card.Team.RED:
+		red_cards.erase(card)
