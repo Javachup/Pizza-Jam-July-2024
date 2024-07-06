@@ -8,6 +8,8 @@ enum Team { NONE = -1, BLUE, RED, GREEN, YELLOW }
 
 const SPEED = 300.0
 const CLOSEST_DIST = 50.0
+const SMALLER_SIZE = 0.8
+const SMALLER_SPEED = 0.1
 
 @onready var sprite = %AnimatedSprite2D
 @onready var attack_area = %Attack
@@ -46,6 +48,7 @@ func update_card():
 	if is_dead:
 		sprite.play("back")
 		sprite.frame = team
+		sprite.z_index = -1
 	else:
 		sprite.play(suit_to_string[suit])
 		sprite.frame = rank
@@ -85,18 +88,20 @@ func _ready():
 	update_card()
 
 func _physics_process(delta):
-	if is_dead: return
-	if target == null: return
-
-	var dir = target.position - position
-	if dir.length_squared() > CLOSEST_DIST * CLOSEST_DIST:
-		velocity = dir.normalized() * SPEED
+	if is_dead:
+		scale = Vector2.ONE * lerp(scale.x, SMALLER_SIZE, SMALLER_SPEED)
 	else:
-		velocity = Vector2.ZERO
-		if can_attack:
-			attack(target.position)
+		if target == null: return
 
-	move_and_slide()
+		var dir = target.position - position
+		if dir.length_squared() > CLOSEST_DIST * CLOSEST_DIST:
+			velocity = dir.normalized() * SPEED
+		else:
+			velocity = Vector2.ZERO
+			if can_attack:
+				attack(target.position)
+
+		move_and_slide()
 
 func _on_attack_timer_timeout():
 	can_attack = true

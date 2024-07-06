@@ -20,12 +20,15 @@ func spawn_card(pos:Vector2, suit:Card.Suit, rank:int, team:Card.Team):
 	elif team == Card.Team.RED:
 		red_cards.append(new_card)
 
+	set_targets()
+
+	add_child(new_card)
+
+func set_targets():
 	for c in blue_cards:
 		c.set_target(red_cards)
 	for c in red_cards:
 		c.set_target(blue_cards)
-
-	add_child(new_card)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("spawn_card"):
@@ -41,3 +44,5 @@ func _on_card_died(card:Card):
 		blue_cards.erase(card)
 	elif card.team == Card.Team.RED:
 		red_cards.erase(card)
+
+	set_targets()
