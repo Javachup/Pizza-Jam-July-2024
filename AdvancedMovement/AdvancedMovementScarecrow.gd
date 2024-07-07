@@ -16,6 +16,9 @@ extends RigidBody2D
 @export var landingDamp : float
 @export var superJumpLinearDamp : float
 @export var superJumpPower : float
+@export var glideGravityScaleMult : float
+@export var glideAcceleration : float
+@export var maxGlideSpeed : float
 
 var onFloor : bool = false
 var charging : bool = false
@@ -35,10 +38,17 @@ var chargingSuperJump = false
 
 var startLinearDamp : float
 
+var gliding : bool = false
+
+var ogGravityScale : float
+
+var glidingJustStarted : bool = false
+
 
 func _enter_tree() -> void:
 	distToBottom = (bottom.global_position - global_position).length()
 	startLinearDamp = linear_damp
+	ogGravityScale = bottom.gravity_scale
 
 
 func _physics_process(delta: float) -> void:
@@ -54,7 +64,7 @@ func _physics_process(delta: float) -> void:
 		leftCharging = true
 		charging = true
 		
-	if Input.is_action_just_pressed("jump") and onFloor:
+	if Input.is_action_just_pressed("jump") and onFloor and !charging:
 		chargingSuperJump = true
 		
 	if Input.is_action_just_released("jump") and chargingSuperJump:
@@ -93,11 +103,47 @@ func _physics_process(delta: float) -> void:
 		apply_force(Vector2.UP * 100000)
 		linear_damp = superJumpLinearDamp
 		#bottom.freeze
-		pass
+		pass	
+	
+		
+	if !onFloor and Input.is_action_pressed("glide") and linear_velocity.y >= 0:
+		glidingJustStarted = !gliding
+		gliding = true
+			
+	else:
+		gliding = false
 		
 		
+	print(bottom.gravity_scale)
+	
+		
+	if gliding:
+		bottom.gravity_scale = 0
+		gravity_scale = ogGravityScale * glideGravityScaleMult
+		#bottom.gravity_scale = ogGravityScale * glideGravityScaleMult
+	else:
+		bottom.gravity_scale = ogGravityScale
+		gravity_scale = 0
+		#bottom.gravity_scale = ogGravityScale
+
+
+	if glidingJustStarted and !onFloor and gliding:
+		bottom.linear_velocity.y = 0
+		linear_velocity.y = 0
 		
 	
+	if gliding and Input.is_action_pressed("right"):
+		apply_force(Vector2.RIGHT * glideAcceleration / 2.0)
+		bottom.apply_force(Vector2.RIGHT * glideAcceleration / 2.0)
+		linear_velocity.x = clampf(linear_velocity.x, -maxGlideSpeed, maxGlideSpeed)
+		bottom.linear_velocity.x = clampf(bottom.linear_velocity.x, -maxGlideSpeed, maxGlideSpeed)
+		
+	if gliding and Input.is_action_pressed("left"):
+		apply_force(Vector2.LEFT * glideAcceleration / 2.0)
+		bottom.apply_force(Vector2.LEFT * glideAcceleration / 2.0)
+		linear_velocity.x = clampf(linear_velocity.x, -maxGlideSpeed, maxGlideSpeed)
+		bottom.linear_velocity.x = clampf(bottom.linear_velocity.x, -maxGlideSpeed, maxGlideSpeed)
+
 	
 	#var appliedForce = false
 	
@@ -153,6 +199,7 @@ func jump_with_dir(jumpForce : float, dir : Vector2):
 
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	
 	pass
 
 
