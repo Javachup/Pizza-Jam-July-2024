@@ -1,10 +1,13 @@
 extends RigidBody2D
 
+class_name Scarecrow
+
 
 @export var bottom: RigidBody2D
 @export var sprite: Sprite2D
 @export var chargeCurve: Curve
 @export var returnToStandingCurve : Curve
+@export var groundRaycast : RayCast2D
 
 @export var jumpForceRange : Vector2
 @export var rotateSpeed: float
@@ -19,6 +22,8 @@ extends RigidBody2D
 @export var glideGravityScaleMult : float
 @export var glideAcceleration : float
 @export var maxGlideSpeed : float
+@export var slamGravityMult : float
+@export var slamBounce : float
 
 var onFloor : bool = false
 var charging : bool = false
@@ -44,6 +49,8 @@ var ogGravityScale : float
 
 var glidingJustStarted : bool = false
 
+var slamming : bool = false
+
 
 func _enter_tree() -> void:
 	distToBottom = (bottom.global_position - global_position).length()
@@ -52,17 +59,30 @@ func _enter_tree() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	
+	print(groundRaycast.is_colliding())
+	if groundRaycast.is_colliding():
+		onFloor = true
+		
+	else:
+		onFloor = false
+	
+	
 	sprite.global_rotation = bottom.global_rotation
+	
+	
 	
 	if Input.is_action_just_pressed("right") and onFloor:
 		apply_force(Vector2.RIGHT.rotated(global_rotation) * rotateSpeed)
 		rightCharging = true
 		charging = true
+		linear_velocity = Vector2.ZERO
 		
 	if Input.is_action_just_pressed("left") and onFloor:
 		apply_force(Vector2.LEFT.rotated(global_rotation) * rotateSpeed)
 		leftCharging = true
 		charging = true
+		linear_velocity = Vector2.ZERO
 		
 	if Input.is_action_just_pressed("jump") and onFloor and !charging:
 		chargingSuperJump = true
@@ -106,16 +126,13 @@ func _physics_process(delta: float) -> void:
 		pass	
 	
 		
-	if !onFloor and Input.is_action_pressed("glide") and linear_velocity.y >= 0:
+	if !onFloor and Input.is_action_pressed("glide") and linear_velocity.y >= 0 and !slamming:
 		glidingJustStarted = !gliding
 		gliding = true
 			
 	else:
 		gliding = false
 		
-		
-	print(bottom.gravity_scale)
-	
 		
 	if gliding:
 		bottom.gravity_scale = 0
@@ -144,6 +161,16 @@ func _physics_process(delta: float) -> void:
 		linear_velocity.x = clampf(linear_velocity.x, -maxGlideSpeed, maxGlideSpeed)
 		bottom.linear_velocity.x = clampf(bottom.linear_velocity.x, -maxGlideSpeed, maxGlideSpeed)
 
+	if !onFloor and Input.is_action_just_pressed("slam") and !slamming:
+		slamming = true
+		bottom.gravity_scale = ogGravityScale * slamGravityMult
+		bottom.physics_material_override.bounce = slamBounce
+	elif !slamming and !gliding:
+		bottom.gravity_scale = ogGravityScale
+		
+	
+	
+	
 	
 	#var appliedForce = false
 	
@@ -198,15 +225,33 @@ func jump_with_dir(jumpForce : float, dir : Vector2):
 	spriteLoggedDist = (sprite.global_position - global_position).length()
 
 
-func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+func bottom_integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	#if state.get_contact_count() < 1:
+		#onFloor = true
+		#return
+	#
+	#for i in state.get_contact_count():
+		#var norm = state.get_contact_local_normal(i)
+		#if norm.dot(Vector2.DOWN) >
+	#
+	#print(state.get_contact_local_normal(0))
 	
 	pass
+	
+	
+	
+# Possible alternative to integrate forces method of detecting contact points
+# https://godotforums.org/d/21368-find-collision-point-of-two-rigidbody2ds
+#func is_terrain_under(body: Node):
+	#test_move(global_transform, Vector2.ZERO, )
 
 
 func on_bottom_collision(body: Node):
 	if body.is_in_group("terrain"):
-		onFloor = true
+		slamming = false
+		gliding = false
 		linear_velocity *= landingDamp
+		bottom.physics_material_override.bounce = 0
 		#stick_bottom()
 		pass
 	pass

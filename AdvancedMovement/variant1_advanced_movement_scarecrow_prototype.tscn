@@ -1,35 +1,35 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0ytpo4ln6ls3"]
+[gd_scene load_steps=10 format=3 uid="uid://b0ytpo4ln6ls3"]
 
 [ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Art/icon.svg" id="1_xctm7"]
 [ext_resource type="Script" path="res://AdvancedMovement/AdvancedMovementScarecrow.gd" id="2_ss42c"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pk88t"]
-size = Vector2(10000, 20)
+[ext_resource type="Script" path="res://AdvancedMovement/ScarecrowStickBottom.gd" id="3_yblnl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r442b"]
 radius = 69.81
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7goxy"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_xsmsu"]
 radius = 20.08
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pk88t"]
+size = Vector2(10000, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6w230"]
+size = Vector2(600, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ugms5"]
+size = Vector2(300, 100)
+
 [node name="ScarecrowPrototype" type="Node2D"]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["terrain"]]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(507, 625)
-shape = SubResource("RectangleShape2D_pk88t")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/CollisionShape2D"]
-scale = Vector2(29.4962, 0.184251)
-texture = ExtResource("1_xctm7")
-
-[node name="ScarecrowBody" type="RigidBody2D" parent="." node_paths=PackedStringArray("bottom", "sprite")]
+[node name="ScarecrowBody" type="RigidBody2D" parent="." node_paths=PackedStringArray("bottom", "sprite", "groundRaycast")]
 position = Vector2(530, 262)
 gravity_scale = 0.0
 script = ExtResource("2_ss42c")
 bottom = NodePath("ScarecrowStickBottom")
 sprite = NodePath("Sprite2D")
+groundRaycast = NodePath("ScarecrowStickBottom/GroundDetection")
 jumpForceRange = Vector2(20000, 70000)
 rotateSpeed = 6000.0
 maxChargeAngle = 45.0
@@ -43,6 +43,8 @@ superJumpPower = 100000.0
 glideGravityScaleMult = 0.1
 glideAcceleration = 800.0
 maxGlideSpeed = 500.0
+slamGravityMult = 350.0
+slamBounce = 0.2
 
 [node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody"]
 texture = ExtResource("1_xctm7")
@@ -54,11 +56,14 @@ shape = SubResource("CircleShape2D_r442b")
 node_a = NodePath("..")
 node_b = NodePath("../ScarecrowStickBottom")
 
-[node name="ScarecrowStickBottom" type="RigidBody2D" parent="ScarecrowBody"]
+[node name="ScarecrowStickBottom" type="RigidBody2D" parent="ScarecrowBody" node_paths=PackedStringArray("scarecrow")]
 position = Vector2(0, 210)
+physics_material_override = SubResource("PhysicsMaterial_7goxy")
 can_sleep = false
 max_contacts_reported = 5
 contact_monitor = true
+script = ExtResource("3_yblnl")
+scarecrow = NodePath("..")
 
 [node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody/ScarecrowStickBottom"]
 scale = Vector2(0.355, 0.355)
@@ -67,8 +72,52 @@ texture = ExtResource("1_xctm7")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScarecrowBody/ScarecrowStickBottom"]
 shape = SubResource("CircleShape2D_xsmsu")
 
+[node name="GroundDetection" type="RayCast2D" parent="ScarecrowBody/ScarecrowStickBottom"]
+target_position = Vector2(0, 35)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="ScarecrowBody"]
+editor_description = "Updates raycast for ground detection to always be facing down"
+remote_path = NodePath("../ScarecrowStickBottom/GroundDetection")
+update_position = false
+update_scale = false
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(584, 76)
 zoom = Vector2(0.505, 0.505)
+
+[node name="Floors" type="Node" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="Floors" groups=["terrain"]]
+position = Vector2(0, 30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floors/Floor"]
+position = Vector2(507, 625)
+shape = SubResource("RectangleShape2D_pk88t")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floors/Floor/CollisionShape2D"]
+scale = Vector2(29.496, 0.754)
+texture = ExtResource("1_xctm7")
+
+[node name="Floor9" type="StaticBody2D" parent="Floors" groups=["terrain"]]
+position = Vector2(660, 561)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floors/Floor9"]
+shape = SubResource("RectangleShape2D_6w230")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floors/Floor9/CollisionShape2D"]
+modulate = Color(0, 1, 1, 1)
+scale = Vector2(4.56, 0.76)
+texture = ExtResource("1_xctm7")
+
+[node name="Floor10" type="StaticBody2D" parent="Floors" groups=["terrain"]]
+position = Vector2(810, 458)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floors/Floor10"]
+shape = SubResource("RectangleShape2D_ugms5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floors/Floor10/CollisionShape2D"]
+modulate = Color(0, 1, 1, 1)
+scale = Vector2(2.28, 0.76)
+texture = ExtResource("1_xctm7")
 
 [connection signal="body_entered" from="ScarecrowBody/ScarecrowStickBottom" to="ScarecrowBody" method="on_bottom_collision"]
