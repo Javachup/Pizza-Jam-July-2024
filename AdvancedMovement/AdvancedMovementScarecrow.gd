@@ -24,6 +24,7 @@ class_name Scarecrow
 @export var maxGlideSpeed : float
 @export var slamGravityMult : float
 @export var slamBounce : float
+@export var justLaunchedBuffer : float
 
 var onFloor : bool = false
 var charging : bool = false
@@ -51,6 +52,8 @@ var glidingJustStarted : bool = false
 
 var slamming : bool = false
 
+var justLaunchedBufferTime : float
+
 
 func _enter_tree() -> void:
 	distToBottom = (bottom.global_position - global_position).length()
@@ -60,8 +63,10 @@ func _enter_tree() -> void:
 
 func _physics_process(delta: float) -> void:
 	
+	justLaunchedBufferTime += delta
+	
 	print(groundRaycast.is_colliding())
-	if groundRaycast.is_colliding():
+	if groundRaycast.is_colliding() and justLaunchedBufferTime > justLaunchedBuffer:
 		onFloor = true
 		
 	else:
@@ -223,6 +228,7 @@ func jump_with_dir(jumpForce : float, dir : Vector2):
 	chargeTime = 0
 	standingReturnTimePassed = 0
 	spriteLoggedDist = (sprite.global_position - global_position).length()
+	justLaunchedBufferTime = 0
 
 
 func bottom_integrate_forces(state: PhysicsDirectBodyState2D) -> void:
@@ -254,4 +260,10 @@ func on_bottom_collision(body: Node):
 		bottom.physics_material_override.bounce = 0
 		#stick_bottom()
 		pass
+		
+	elif body is Enemy and slamming:
+		slamming = false
+		gliding = false
+		bottom.physics_material_override.bounce = 0		
+		body.destroy()
 	pass
