@@ -1,9 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://b0ytpo4ln6ls3"]
+[gd_scene load_steps=12 format=3 uid="uid://b0ytpo4ln6ls3"]
 
 [ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Art/icon.svg" id="1_xctm7"]
 [ext_resource type="Script" path="res://AdvancedMovement/AdvancedMovementScarecrow.gd" id="2_ss42c"]
 [ext_resource type="Script" path="res://AdvancedMovement/ScarecrowStickBottom.gd" id="3_yblnl"]
 [ext_resource type="PackedScene" uid="uid://ll84pdrf6i0m" path="res://Enemies/Enemy.tscn" id="4_6bfxo"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ubt63"]
+bounce = 10.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r442b"]
 radius = 69.81
@@ -26,6 +29,7 @@ size = Vector2(300, 100)
 
 [node name="ScarecrowBody" type="RigidBody2D" parent="." node_paths=PackedStringArray("bottom", "sprite", "groundRaycast")]
 position = Vector2(530, 262)
+physics_material_override = SubResource("PhysicsMaterial_ubt63")
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("2_ss42c")

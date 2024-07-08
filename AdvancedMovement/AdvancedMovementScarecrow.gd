@@ -264,6 +264,6 @@ func on_bottom_collision(body: Node):
 	elif body is Enemy and slamming:
 		slamming = false
 		gliding = false
-		bottom.physics_material_override.bounce = 0		
+		#bottom.physics_material_override.bounce = 0		
 		body.destroy()
 	pass
