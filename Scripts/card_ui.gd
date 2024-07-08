@@ -11,6 +11,8 @@ var rank:int # 0=Ace, 12=King
 var original_size:int
 var target_size:float
 
+signal on_toggled_with_self(card:UICard, toggled_on:bool)
+
 func set_card(suit:Card.Suit, rank:int):
 	self.suit = suit
 	self.rank = rank
@@ -33,6 +35,7 @@ func _on_toggled(toggled_on):
 		target_size = original_size + SIZE_INCREASE
 	else:
 		target_size = original_size
+	on_toggled_with_self.emit(self, toggled_on)
 
 func _process(_delta):
 	custom_minimum_size.x = lerp(custom_minimum_size.x, target_size, SIZE_LERP_SPEED)
