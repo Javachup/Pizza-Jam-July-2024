@@ -24,6 +24,7 @@ script = ExtResource("1_vc0aq")
 [node name="Health" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_uvq7q")
+max_health = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_nvwjg")
@@ -31,10 +32,4 @@ sprite_frames = SubResource("SpriteFrames_nvwjg")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0yera")
 
-[node name="Temp" type="Timer" parent="."]
-wait_time = 0.663
-one_shot = true
-autostart = true
-
 [connection signal="on_death" from="Health" to="." method="_on_health_on_death"]
-[connection signal="timeout" from="Temp" to="." method="_on_temp_timeout"]

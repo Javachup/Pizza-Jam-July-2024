@@ -12,8 +12,3 @@ func _physics_process(_delta):
 
 func _on_health_on_death():
 	queue_free()
-
-
-
-func _on_temp_timeout():
-	health.take_damage()
