@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://yscvb4a5hc33"]
 
-[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Art/icon.svg" id="1_8xpj0"]
-[ext_resource type="Script" path="res://First/FirstScarecrow.gd" id="2_vbjio"]
+[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="1_8xpj0"]
+[ext_resource type="Script" path="res://Prototype/First/FirstScarecrow.gd" id="2_vbjio"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pk88t"]
 size = Vector2(10000, 20)

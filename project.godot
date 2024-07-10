@@ -11,9 +11,9 @@ config_version=5
 [application]
 
 config/name="PizzaJam"
-run/main_scene="res://AdvancedMovement/variant1_advanced_movement_scarecrow_prototype.tscn"
+run/main_scene="res://Prototype/AdvancedMovement/variant1_advanced_movement_scarecrow_prototype.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-config/icon="res://Art/icon.svg"
+config/icon="res://Prototype/Art/icon.svg"
 
 [dotnet]
 

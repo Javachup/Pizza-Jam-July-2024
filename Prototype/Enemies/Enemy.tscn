@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ll84pdrf6i0m"]
 
-[ext_resource type="Script" path="res://Enemies/Enemy.gd" id="1_hpult"]
-[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Art/icon.svg" id="1_pbwh7"]
+[ext_resource type="Script" path="res://Prototype/Enemies/Enemy.gd" id="1_hpult"]
+[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="1_pbwh7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dkmab"]
 size = Vector2(120, 120)

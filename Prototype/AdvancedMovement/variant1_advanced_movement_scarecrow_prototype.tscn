@@ -1,9 +1,9 @@
 [gd_scene load_steps=12 format=3 uid="uid://b0ytpo4ln6ls3"]
 
-[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Art/icon.svg" id="1_xctm7"]
-[ext_resource type="Script" path="res://AdvancedMovement/AdvancedMovementScarecrow.gd" id="2_ss42c"]
-[ext_resource type="Script" path="res://AdvancedMovement/ScarecrowStickBottom.gd" id="3_yblnl"]
-[ext_resource type="PackedScene" uid="uid://ll84pdrf6i0m" path="res://Enemies/Enemy.tscn" id="4_6bfxo"]
+[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="1_xctm7"]
+[ext_resource type="Script" path="res://Prototype/AdvancedMovement/AdvancedMovementScarecrow.gd" id="2_ss42c"]
+[ext_resource type="Script" path="res://Prototype/AdvancedMovement/ScarecrowStickBottom.gd" id="3_yblnl"]
+[ext_resource type="PackedScene" uid="uid://ll84pdrf6i0m" path="res://Prototype/Enemies/Enemy.tscn" id="4_6bfxo"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ubt63"]
 bounce = 10.0
