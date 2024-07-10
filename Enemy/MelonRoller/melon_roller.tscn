@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://f36anx7g7oxt"]
+
+[ext_resource type="Script" path="res://Enemy/MelonRoller/melon_roller.gd" id="1_vc0aq"]
+[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="2_hxvdt"]
+[ext_resource type="Script" path="res://Enemy/health.gd" id="3_uvq7q"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nvwjg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_hxvdt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0yera"]
+radius = 63.1269
+
+[node name="MelonRoller" type="CharacterBody2D"]
+script = ExtResource("1_vc0aq")
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_uvq7q")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_nvwjg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_0yera")
+
+[node name="Temp" type="Timer" parent="."]
+wait_time = 0.663
+one_shot = true
+autostart = true
+
+[connection signal="on_death" from="Health" to="." method="_on_health_on_death"]
+[connection signal="timeout" from="Temp" to="." method="_on_temp_timeout"]
