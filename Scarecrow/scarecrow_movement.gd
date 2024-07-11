@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 @export var bottom : RigidBody2D
+@export var groundDetectPivot : Node2D
 @export var groundDetectArea : Area2D
 
 @export var hopRotateSpeed : float = 100
@@ -16,12 +17,23 @@ var onGround : bool = false
 var chargeDir : int = 0
 
 var prevFrameBottomAngle : float = 0
+
+var wasOnGroundPrevFrame : bool = false
+
+var detectGroundBuffer : float = .2
 	
 	
 	
 func _process(delta: float) -> void:
-		
+	
+	wasOnGroundPrevFrame = onGround
+	detectGroundBuffer -= delta
+	
+	#print(detectGroundBuffer)
+	
 	update_on_ground()
+	
+	groundDetectPivot.global_rotation = 0
 	
 	match currentMoveState:
 		MoveState.IDLE:
@@ -46,9 +58,26 @@ func _physics_process(delta: float) -> void:
 	pass
 	
 	
-func idle(delta : float):
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	if currentMoveState == MoveState.IDLE:
+		
+		if onGround and detectGroundBuffer < 0:
+			print("here")
+			bottom.linear_velocity.x = 0
+			bottom.angular_velocity = 0
+			bottom.rotation = 0
+		
+		pass
+		#state.apply_torque(-bottom.global_rotation * 40000)
+		#bottom.angular_damp = (2 * PI - abs(bottom.global_rotation)) * 100
+		#if abs(bottom.global_rotation_degrees) < 1:
+			#bottom.lock_rotation = true
+	#else:
+		#bottom.lock_rotation = false
+	pass
 	
-	lock_rotation = false
+	
+func idle(delta : float):
 	
 	if onGround:
 		# chargeDir will be -1 for left, 0 for neither / both, 1 for right
@@ -56,14 +85,23 @@ func idle(delta : float):
 	
 		if chargeDir != 0:
 			currentMoveState = MoveState.HOP_CHARGE
-	
+			bottom.angular_damp = 0
+			
 	pass
 	
 	
 func idle_physics(delta : float):
 	
-	#bottom.apply_torque(-bottom.global_rotation * 10000)
-	#bottom.angular_damp = 10000 / abs(bottom.global_rotation)
+	bottom.apply_torque(-bottom.global_rotation * 40000)
+	bottom.apply_torque(-bottom.angular_velocity * 4000)
+	
+	#bottom.angular_damp = (2 * PI - abs(bottom.global_rotation)) * 100
+	
+	
+	
+	#if onGround:
+		#bottom.angular_velocity = 0
+		
 	#bottom.angular_damp = INF
 	#
 	#apply_force(Vector2.UP * 10000)
@@ -101,6 +139,8 @@ func hop_charge():
 		
 		chargeDir = 0
 		currentMoveState = MoveState.IDLE
+		
+		detectGroundBuffer = .2
 				
 	pass
 	
@@ -111,6 +151,9 @@ func hop_charge_physics(delta : float):
 	
 func update_on_ground():
 	#onGround = groundDetectionRaycast.is_colliding()
+	if detectGroundBuffer > 0:
+		onGround = false
+		return
 	onGround = groundDetectArea.get_overlapping_bodies().size() != 0
 	pass
 	
