@@ -1,13 +1,13 @@
 extends RigidBody2D
 
 # States that the scarecrow can be in, mutually exclusive
-enum MoveState { IDLE, HOP_CHARGE, SUPER_JUMP_CHARGE } 
+enum MoveState { IDLE, HOP_CHARGE, SUPER_JUMP_CHARGE, GLIDE } 
 var currentMoveState : MoveState = MoveState.IDLE
 
 @export_group("References")
-@export var bottom : RigidBody2D
 @export var groundDetectPivot : Node2D
 @export var groundDetectArea : Area2D
+@export var glideGroundDetectArea : Area2D
 
 @export_group("Idle Parameters")
 @export var idleStraightForce : float = 40000
@@ -28,6 +28,10 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export var superJumpMaxForce : float = 10000
 @export var superJumpForceCurve : Curve # Between 0 and 1
 
+@export_group("Glide Parameters")
+@export var glideSpeed : float = 100
+@export var glideGravityMult : float = .2
+
 var onGround : bool = false
 
 # Hop vars
@@ -35,6 +39,13 @@ var hopChargeDir : int = 0
 
 # Super jump vars
 var superJumpChargeTime = 0
+
+# Glide vars
+var ogGravity : float = 0
+
+
+func _ready() -> void:
+	ogGravity = gravity_scale
 
 	
 func _process(delta: float) -> void:
@@ -50,6 +61,9 @@ func _process(delta: float) -> void:
 			
 		MoveState.SUPER_JUMP_CHARGE:
 			super_jump_charge(delta)
+			
+		MoveState.GLIDE:
+			glide(delta)
 		
 	pass
 	
@@ -66,6 +80,9 @@ func _physics_process(delta: float) -> void:
 			
 		MoveState.SUPER_JUMP_CHARGE:
 			super_jump_charge_physics(delta)
+			
+		MoveState.GLIDE:
+			glide_physics(delta)
 		
 	pass
 	
@@ -85,6 +102,13 @@ func idle(delta : float):
 		# Check for super jump input
 		if Input.is_action_just_pressed("jump"):
 			currentMoveState = MoveState.SUPER_JUMP_CHARGE
+			return
+	
+	else:	
+		# Check for glide input
+		if linear_velocity.y > 0 and Input.is_action_pressed("glide"):
+			currentMoveState = MoveState.GLIDE
+			return
 			
 	pass
 	
@@ -92,19 +116,19 @@ func idle(delta : float):
 func idle_physics(delta : float):
 	
 	if onGround:
-		bottom.linear_velocity.x = 0
-		bottom.angular_velocity = 0
+		linear_velocity.x = 0
+		angular_velocity = 0
 		
 		#global_rotation = lerpf(global_rotation, 0, delta * 10)
 		
-		bottom.global_rotation = 0 	# I hate that I have to do this, it makes it look stiff, but this is the
+		global_rotation = 0 	# I hate that I have to do this, it makes it look stiff, but this is the
 									# the only way I've found to stop a bug with the scarecrow behaving strangely
 									# when landing
 		
 	else:
 	
-		bottom.apply_torque(-bottom.global_rotation * idleStraightForce)
-		bottom.apply_torque(-bottom.angular_velocity * idleStraightDamp)
+		apply_torque(-global_rotation * idleStraightForce)
+		apply_torque(-angular_velocity * idleStraightDamp)
 	
 	pass
 	
@@ -115,11 +139,11 @@ func hop_charge():
 		(Input.is_action_just_released("left") and hopChargeDir < 0):
 		
 		linear_velocity = Vector2.ZERO
-		bottom.angular_velocity = 0
+		angular_velocity = 0
 		
 		# Make sure we actually rotated enough to launch
 		if(abs(global_rotation_degrees) >= minHopChargeAngle):		
-			jump(Vector2.RIGHT.rotated(bottom.global_rotation) * -hopChargeDir, calculate_hop_force())
+			jump(Vector2.RIGHT.rotated(global_rotation) * -hopChargeDir, calculate_hop_force())
 			onGround = false			
 		
 		hopChargeDir = 0
@@ -171,8 +195,34 @@ func calculate_super_jump_force():
 	return lerpf(superJumpMinForce, superJumpMaxForce, curveSamp)
 	
 	
+func glide(delta : float):
+	
+	gravity_scale = ogGravity * glideGravityMult # Not best practice, but I don't have time to make
+													# a nice state machine system with enter / exit :(
+	
+	pass
+	
+	
+func glide_physics(delta : float):
+	
+	if Input.is_action_just_released("glide") or onGround:# or glideGroundDetectArea.get_overlapping_areas().size() >= 1:
+		currentMoveState = MoveState.IDLE
+		gravity_scale = ogGravity
+		angular_velocity = 0
+		
+		if onGround:
+			linear_velocity.x = 0
+		
+		return
+	
+	var inputDir = int(Input.is_action_pressed("right")) - int(Input.is_action_pressed("left"))
+	apply_force(Vector2.RIGHT * inputDir * glideSpeed * delta)
+	
+	pass
+	
+	
 func jump(dir : Vector2, force : float):
-	bottom.apply_impulse(dir * force)
+	apply_impulse(dir * force)
 	pass
 	
 
