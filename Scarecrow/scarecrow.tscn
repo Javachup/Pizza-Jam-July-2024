@@ -1,16 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://0wd3a6g2sqqg"]
+[gd_scene load_steps=7 format=3 uid="uid://0wd3a6g2sqqg"]
 
 [ext_resource type="Script" path="res://Scarecrow/scarecrow_movement.gd" id="1_kq6rj"]
 [ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="2_kteop"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pfaaw"]
 
+[sub_resource type="Curve" id="Curve_oh6mg"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_qtc4r"]
 radius = 20.08
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vesn1"]
 radius = 16.0
-height = 44.0
+height = 40.0
 
 [node name="ScarecrowStickBottom" type="RigidBody2D" node_paths=PackedStringArray("bottom", "groundDetectPivot", "groundDetectArea") groups=["ScarecrowBottom"]]
 collision_layer = 2
@@ -22,7 +26,10 @@ script = ExtResource("1_kq6rj")
 bottom = NodePath(".")
 groundDetectPivot = NodePath("GroundDetectPivot")
 groundDetectArea = NodePath("GroundDetectPivot/GroundDetectArea")
-hopRotateSpeed = 1000.0
+hopRotateSpeed = 20000.0
+minHopForce = 500.0
+minHopChargeAngle = 15.0
+hopChargePowerCurve = SubResource("Curve_oh6mg")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.355, 0.355)
@@ -34,7 +41,7 @@ shape = SubResource("CircleShape2D_qtc4r")
 [node name="GroundDetectPivot" type="Node2D" parent="."]
 
 [node name="GroundDetectArea" type="Area2D" parent="GroundDetectPivot"]
-position = Vector2(0, 24.76)
+position = Vector2(0, 22)
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroundDetectPivot/GroundDetectArea"]
@@ -46,3 +53,6 @@ position = Vector2(0, -218)
 
 [node name="Sprite2D" type="Sprite2D" parent="ScarecrowBody"]
 texture = ExtResource("2_kteop")
+
+[connection signal="body_entered" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_entered"]
+[connection signal="body_exited" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_exited"]

@@ -19,8 +19,8 @@ color = Color(0.631373, 0.529412, 0.0745098, 1)
 polygon = PackedVector2Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(492, 256)
-zoom = Vector2(0.695, 0.695)
+position = Vector2(488, 78)
+zoom = Vector2(0.505, 0.505)
 
 [node name="Scarecrow" parent="." instance=ExtResource("1_18qet")]
 position = Vector2(474, 232)
