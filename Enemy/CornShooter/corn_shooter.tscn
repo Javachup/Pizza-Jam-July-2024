@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://ditd8jmc1ofn8"]
+[gd_scene load_steps=7 format=3 uid="uid://ditd8jmc1ofn8"]
 
 [ext_resource type="Script" path="res://Enemy/health.gd" id="1_gjujx"]
 [ext_resource type="Script" path="res://Enemy/CornShooter/corn_shooter.gd" id="1_pmlhb"]
 [ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="2_dnp8d"]
+[ext_resource type="PackedScene" uid="uid://dmd0x3b744fu3" path="res://Enemy/SeedBullet/seed_bullet.tscn" id="2_jrr2t"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_b4tmt"]
 animations = [{
@@ -20,6 +21,7 @@ radius = 155.293
 
 [node name="CornShooter" type="Node2D"]
 script = ExtResource("1_pmlhb")
+seed_bullet = ExtResource("2_jrr2t")
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("1_gjujx")
