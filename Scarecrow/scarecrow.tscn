@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://0wd3a6g2sqqg"]
+[gd_scene load_steps=8 format=3 uid="uid://0wd3a6g2sqqg"]
 
 [ext_resource type="Script" path="res://Scarecrow/scarecrow_movement.gd" id="1_kq6rj"]
 [ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="2_kteop"]
@@ -6,6 +6,10 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pfaaw"]
 
 [sub_resource type="Curve" id="Curve_oh6mg"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_ck03k"]
 _data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
 point_count = 2
 
@@ -30,6 +34,9 @@ hopRotateSpeed = 20000.0
 minHopForce = 500.0
 minHopChargeAngle = 15.0
 hopChargePowerCurve = SubResource("Curve_oh6mg")
+superJumpMinForce = 500.0
+superJumpMaxForce = 2500.0
+superJumpForceCurve = SubResource("Curve_ck03k")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.355, 0.355)
