@@ -1,13 +1,12 @@
 extends RigidBody2D
 
 # States that the scarecrow can be in, mutually exclusive
-enum MoveState { IDLE, HOP_CHARGE, SUPER_JUMP_CHARGE, GLIDE } 
+enum MoveState { IDLE, HOP_CHARGE, SUPER_JUMP_CHARGE, GLIDE, STOMP } 
 var currentMoveState : MoveState = MoveState.IDLE
 
 @export_group("References")
 @export var groundDetectPivot : Node2D
 @export var groundDetectArea : Area2D
-@export var glideGroundDetectArea : Area2D
 
 @export_group("Idle Parameters")
 @export var idleStraightForce : float = 40000
@@ -31,6 +30,9 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export_group("Glide Parameters")
 @export var glideSpeed : float = 100
 @export var glideGravityMult : float = .2
+
+@export_group("Stomp Parameters")
+@export var stompSpeed : float = 1000
 
 var onGround : bool = false
 
@@ -64,6 +66,9 @@ func _process(delta: float) -> void:
 			
 		MoveState.GLIDE:
 			glide(delta)
+			
+		MoveState.STOMP:
+			stomp(delta)
 		
 	pass
 	
@@ -83,6 +88,9 @@ func _physics_process(delta: float) -> void:
 			
 		MoveState.GLIDE:
 			glide_physics(delta)
+			
+		MoveState.STOMP:
+			stomp_physics(delta)
 		
 	pass
 	
@@ -108,6 +116,12 @@ func idle(delta : float):
 		# Check for glide input
 		if linear_velocity.y > 0 and Input.is_action_pressed("glide"):
 			currentMoveState = MoveState.GLIDE
+			return
+			
+		if Input.is_action_just_pressed("stomp"):
+			currentMoveState = MoveState.STOMP
+			linear_velocity = Vector2.ZERO
+			linear_velocity.y = stompSpeed
 			return
 			
 	pass
@@ -199,13 +213,12 @@ func glide(delta : float):
 	
 	gravity_scale = ogGravity * glideGravityMult # Not best practice, but I don't have time to make
 													# a nice state machine system with enter / exit :(
-	
 	pass
 	
 	
 func glide_physics(delta : float):
 	
-	if Input.is_action_just_released("glide") or onGround:# or glideGroundDetectArea.get_overlapping_areas().size() >= 1:
+	if Input.is_action_just_released("glide") or onGround:
 		currentMoveState = MoveState.IDLE
 		gravity_scale = ogGravity
 		angular_velocity = 0
@@ -217,6 +230,18 @@ func glide_physics(delta : float):
 	
 	var inputDir = int(Input.is_action_pressed("right")) - int(Input.is_action_pressed("left"))
 	apply_force(Vector2.RIGHT * inputDir * glideSpeed * delta)
+	
+	pass
+	
+	
+func stomp(delta : float):
+	pass
+	
+	
+func stomp_physics(delta : float):
+	
+	if onGround:
+		currentMoveState = MoveState.IDLE
 	
 	pass
 	

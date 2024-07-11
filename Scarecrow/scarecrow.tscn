@@ -20,7 +20,7 @@ radius = 20.08
 radius = 16.0
 height = 40.0
 
-[node name="ScarecrowStickBottom" type="RigidBody2D" node_paths=PackedStringArray("groundDetectPivot", "groundDetectArea", "glideGroundDetectArea") groups=["ScarecrowBottom"]]
+[node name="ScarecrowStickBottom" type="RigidBody2D" node_paths=PackedStringArray("groundDetectPivot", "groundDetectArea") groups=["ScarecrowBottom"]]
 collision_layer = 2
 physics_material_override = SubResource("PhysicsMaterial_pfaaw")
 can_sleep = false
@@ -29,7 +29,6 @@ contact_monitor = true
 script = ExtResource("1_kq6rj")
 groundDetectPivot = NodePath("GroundDetectPivot")
 groundDetectArea = NodePath("GroundDetectPivot/GroundDetectArea")
-glideGroundDetectArea = NodePath("GroundDetectPivot/GlideGroundDetect")
 hopRotateSpeed = 20000.0
 minHopForce = 500.0
 minHopChargeAngle = 15.0
@@ -40,6 +39,7 @@ superJumpMaxForce = 1500.0
 superJumpForceCurve = SubResource("Curve_ck03k")
 glideSpeed = 100000.0
 glideGravityMult = 0.1
+stompSpeed = 5000.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.355, 0.355)
@@ -55,16 +55,6 @@ position = Vector2(0, 30)
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroundDetectPivot/GroundDetectArea"]
-position = Vector2(0, -20)
-shape = SubResource("CapsuleShape2D_vesn1")
-
-[node name="GlideGroundDetect" type="Area2D" parent="GroundDetectPivot"]
-editor_description = "Because of some weirdness with physics not updating properly for a frame and the fact that velocities on glides can get high, I'm adding another ground detect that will only be used by glide"
-visible = false
-position = Vector2(0, 33)
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundDetectPivot/GlideGroundDetect"]
 position = Vector2(0, -20)
 shape = SubResource("CapsuleShape2D_vesn1")
 

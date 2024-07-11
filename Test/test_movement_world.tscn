@@ -3,18 +3,18 @@
 [ext_resource type="PackedScene" uid="uid://0wd3a6g2sqqg" path="res://Scarecrow/scarecrow.tscn" id="1_18qet"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ch3e"]
-size = Vector2(10000, 100)
+size = Vector2(10000, 1000)
 
 [node name="TestMovementWorld" type="Node"]
 
 [node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(656, 651)
+position = Vector2(683, 1127)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
 shape = SubResource("RectangleShape2D_5ch3e")
 
 [node name="Polygon2D" type="Polygon2D" parent="Floor"]
-scale = Vector2(10000, 100)
+scale = Vector2(10000, 1000)
 color = Color(0.631373, 0.529412, 0.0745098, 1)
 polygon = PackedVector2Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5)
 
