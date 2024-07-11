@@ -61,12 +61,6 @@ func _physics_process(delta: float) -> void:
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if currentMoveState == MoveState.IDLE:
 		
-		if onGround and detectGroundBuffer < 0:
-			print("here")
-			bottom.linear_velocity.x = 0
-			bottom.angular_velocity = 0
-			bottom.rotation = 0
-		
 		pass
 		#state.apply_torque(-bottom.global_rotation * 40000)
 		#bottom.angular_damp = (2 * PI - abs(bottom.global_rotation)) * 100
@@ -92,8 +86,15 @@ func idle(delta : float):
 	
 func idle_physics(delta : float):
 	
-	bottom.apply_torque(-bottom.global_rotation * 40000)
-	bottom.apply_torque(-bottom.angular_velocity * 4000)
+	if onGround and detectGroundBuffer < 0:
+		print("here")
+		bottom.linear_velocity.x = 0
+		bottom.angular_velocity = 0
+		bottom.rotation_degrees = 0
+	else:
+	
+		bottom.apply_torque(-bottom.global_rotation * 40000)
+		bottom.apply_torque(-bottom.angular_velocity * 4000)
 	
 	#bottom.angular_damp = (2 * PI - abs(bottom.global_rotation)) * 100
 	
