@@ -17,11 +17,11 @@ func shoot():
 
 func hide_corn():
 	is_hiding = true
-	$AnimatedSprite2D.scale.y = 0.1
+	$Sprite2D.scale.y = 0.1
 
 func reveal_corn():
 	is_hiding = false
-	$AnimatedSprite2D.scale.y = 1.0
+	$Sprite2D.scale.y = 1.0
 
 func _on_hide_area_area_entered(area):
 	hide_corn()
