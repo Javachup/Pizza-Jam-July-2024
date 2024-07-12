@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-class_name Scarecrow
+class_name PrototypeScarecrow
 
 
 @export var bottom: RigidBody2D
