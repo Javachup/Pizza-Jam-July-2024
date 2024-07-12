@@ -8,8 +8,10 @@ var target = null
 func shoot():
 	if target == null:
 		return
+	if is_hiding:
+		return
 
-	var dir = (target.position - position).normalized
+	var dir = (target.position - position).normalized()
 	var bullet = seed_bullet.instantiate() as SeedBullet
 	bullet.position = position
 	bullet.direction = dir
@@ -43,3 +45,6 @@ func _on_see_area_body_exited(body):
 
 func _on_shoot_timer_timeout():
 	shoot()
+
+func _on_health_on_death():
+	queue_free()

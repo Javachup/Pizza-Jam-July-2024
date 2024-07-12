@@ -41,7 +41,7 @@ script = ExtResource("1_gjujx")
 max_health = 1
 
 [node name="ShootTimer" type="Timer" parent="."]
-wait_time = 0.75
+wait_time = 3.0
 autostart = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -67,6 +67,7 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SeeArea"]
 shape = SubResource("CircleShape2D_lm1xe")
 
+[connection signal="on_death" from="Health" to="." method="_on_health_on_death"]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
 [connection signal="area_entered" from="HideArea" to="." method="_on_hide_area_area_entered"]
 [connection signal="area_exited" from="HideArea" to="." method="_on_hide_area_area_exited"]

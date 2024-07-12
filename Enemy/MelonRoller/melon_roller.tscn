@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://f36anx7g7oxt"]
+[gd_scene load_steps=8 format=3 uid="uid://f36anx7g7oxt"]
 
 [ext_resource type="Script" path="res://Enemy/MelonRoller/melon_roller.gd" id="1_vc0aq"]
 [ext_resource type="Script" path="res://Enemy/health.gd" id="3_uvq7q"]
@@ -22,6 +22,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_0yera"]
 radius = 16.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a0um1"]
+size = Vector2(8, 40)
+
 [node name="MelonRoller" type="Area2D"]
 collision_layer = 4
 collision_mask = 0
@@ -38,4 +41,20 @@ sprite_frames = SubResource("SpriteFrames_nvwjg")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0yera")
 
+[node name="RightArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightArea"]
+position = Vector2(22, 0)
+shape = SubResource("RectangleShape2D_a0um1")
+
+[node name="LeftArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftArea"]
+position = Vector2(-22, 0)
+shape = SubResource("RectangleShape2D_a0um1")
+
 [connection signal="on_death" from="Health" to="." method="_on_health_on_death"]
+[connection signal="body_shape_exited" from="RightArea" to="." method="_on_right_area_body_shape_exited"]
+[connection signal="body_shape_exited" from="LeftArea" to="." method="_on_left_area_body_shape_exited"]
