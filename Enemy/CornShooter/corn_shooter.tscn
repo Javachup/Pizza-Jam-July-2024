@@ -41,7 +41,7 @@ script = ExtResource("1_gjujx")
 max_health = 1
 
 [node name="ShootTimer" type="Timer" parent="."]
-wait_time = 0.75
+wait_time = 3.0
 autostart = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
