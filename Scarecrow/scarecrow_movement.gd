@@ -178,6 +178,9 @@ func hop_charge_physics(delta : float):
 		
 	else:
 		apply_torque(hopChargeDir * hopRotateSpeed * delta)
+	
+	print(global_rotation_degrees)
+		
 		
 	
 	

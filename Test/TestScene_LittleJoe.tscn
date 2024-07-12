@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dsclo1ly2eqdp"]
+[gd_scene load_steps=5 format=3 uid="uid://dsclo1ly2eqdp"]
 
 [ext_resource type="PackedScene" uid="uid://f36anx7g7oxt" path="res://Enemy/MelonRoller/melon_roller.tscn" id="1_nw2f5"]
 [ext_resource type="PackedScene" uid="uid://ditd8jmc1ofn8" path="res://Enemy/CornShooter/corn_shooter.tscn" id="2_vm7x6"]
 [ext_resource type="TileSet" uid="uid://cup4c8275jnpj" path="res://Art/level_tileset.tres" id="4_4tc43"]
+[ext_resource type="PackedScene" uid="uid://0wd3a6g2sqqg" path="res://Scarecrow/scarecrow.tscn" id="4_5swrc"]
 
 [node name="TestScene" type="Node2D"]
 
@@ -18,3 +19,6 @@ position = Vector2(-106, 110)
 
 [node name="MelonRoller" parent="." instance=ExtResource("1_nw2f5")]
 position = Vector2(391, 111)
+
+[node name="ScarecrowStickBottom" parent="." instance=ExtResource("4_5swrc")]
+position = Vector2(211, 83)
