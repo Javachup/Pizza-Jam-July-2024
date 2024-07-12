@@ -10,6 +10,7 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export var groundDetectPivot : Node2D
 @export var groundDetectArea : Area2D
 @export var health : Health
+@export var tempSprite : Sprite2D
 
 @export_group("Idle Parameters")
 @export var idleStraightForce : float = 40000
@@ -61,6 +62,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	
 	groundDetectPivot.global_rotation = 0 # Make sure ground detect area is always facing downward
+	
+	#print(MoveState.keys()[currentMoveState])
 	
 	match currentMoveState:
 		MoveState.IDLE:
@@ -207,7 +210,24 @@ func hop_charge_physics(delta : float):
 		global_rotation_degrees = clampf(global_rotation_degrees, -maxHopChargeAngle, maxHopChargeAngle)
 		
 	else:
-		apply_torque(hopChargeDir * hopRotateSpeed * delta)
+		
+		var force = Vector2.RIGHT.rotated(global_rotation) * hopChargeDir * hopRotateSpeed * delta
+		
+		#if sign(global_rotation) == hopChargeDir:
+			#force *= 1
+	
+		#if sign(global_rotation) != hopChargeDir:
+			#force.y *= -1
+			
+		#force.y *= 40
+		
+		tempSprite.global_position = (global_position + Vector2(0, -100).rotated(global_rotation)) + force
+		apply_force(force, global_position + Vector2(0, -100).rotated(global_rotation))
+	
+		
+		print(force)
+		
+		#print(Vector2.RIGHT.rotated(global_rotation) * hopChargeDir)
 	
 	#print(global_rotation_degrees)
 		

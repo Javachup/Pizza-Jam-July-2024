@@ -1,5 +1,6 @@
-[gd_scene load_steps=46 format=3 uid="uid://0mrs6xn1bcxr"]
+[gd_scene load_steps=47 format=3 uid="uid://0mrs6xn1bcxr"]
 
+[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="1_gad8i"]
 [ext_resource type="PackedScene" uid="uid://0wd3a6g2sqqg" path="res://Scarecrow/scarecrow.tscn" id="1_tc3d0"]
 [ext_resource type="TileSet" uid="uid://cup4c8275jnpj" path="res://Art/level_tileset.tres" id="2_447sb"]
 [ext_resource type="Script" path="res://TilemapBaker/TilemapCollisionBaker.gd" id="3_f7q6f"]
@@ -128,9 +129,15 @@ size = Vector2(192, 32)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="ScarecrowStickBottom" parent="." instance=ExtResource("1_tc3d0")]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-2219, -24)
+scale = Vector2(0.38, 0.38)
+texture = ExtResource("1_gad8i")
+
+[node name="ScarecrowStickBottom" parent="." node_paths=PackedStringArray("tempSprite") instance=ExtResource("1_tc3d0")]
 position = Vector2(-2219, -24)
 constant_force = Vector2(0, -10)
+tempSprite = NodePath("../Sprite2D")
 maxHopAngleAdjustment = 20
 
 [node name="TileMap" type="TileMap" parent="."]
