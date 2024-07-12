@@ -1,9 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://ditd8jmc1ofn8"]
+[gd_scene load_steps=10 format=3 uid="uid://ditd8jmc1ofn8"]
 
 [ext_resource type="Script" path="res://Enemy/health.gd" id="1_gjujx"]
 [ext_resource type="Script" path="res://Enemy/CornShooter/corn_shooter.gd" id="1_pmlhb"]
 [ext_resource type="PackedScene" uid="uid://dmd0x3b744fu3" path="res://Enemy/SeedBullet/seed_bullet.tscn" id="2_jrr2t"]
 [ext_resource type="Texture2D" uid="uid://dh8c8f5oed2x2" path="res://Art/tileset.png" id="4_ypc7b"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_06sfi"]
+radius = 7.0
+height = 34.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wl67w"]
 atlas = ExtResource("4_ypc7b")
@@ -26,7 +30,9 @@ radius = 86.0523
 [sub_resource type="CircleShape2D" id="CircleShape2D_lm1xe"]
 radius = 424.609
 
-[node name="CornShooter" type="Node2D"]
+[node name="CornShooter" type="Area2D"]
+collision_layer = 8
+collision_mask = 0
 script = ExtResource("1_pmlhb")
 seed_bullet = ExtResource("2_jrr2t")
 
@@ -36,6 +42,10 @@ max_health = 1
 
 [node name="ShootTimer" type="Timer" parent="."]
 wait_time = 0.75
+autostart = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_06sfi")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.42, 1)
@@ -44,6 +54,7 @@ animation = &"Hide"
 
 [node name="HideArea" type="Area2D" parent="."]
 collision_layer = 0
+collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HideArea"]
 shape = SubResource("CircleShape2D_l4dgi")
@@ -51,11 +62,14 @@ shape = SubResource("CircleShape2D_l4dgi")
 [node name="SeeArea" type="Area2D" parent="."]
 editor_description = "Seeing the player"
 collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SeeArea"]
 shape = SubResource("CircleShape2D_lm1xe")
 
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="area_entered" from="HideArea" to="." method="_on_hide_area_area_entered"]
+[connection signal="area_exited" from="HideArea" to="." method="_on_hide_area_area_exited"]
 [connection signal="body_entered" from="HideArea" to="." method="_on_hide_area_body_entered"]
 [connection signal="body_exited" from="HideArea" to="." method="_on_hide_area_body_exited"]
 [connection signal="body_entered" from="SeeArea" to="." method="_on_see_area_body_entered"]

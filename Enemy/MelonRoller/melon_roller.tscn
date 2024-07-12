@@ -22,7 +22,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_0yera"]
 radius = 16.0
 
-[node name="MelonRoller" type="AnimatableBody2D"]
+[node name="MelonRoller" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_vc0aq")
 
 [node name="Health" type="Node" parent="."]

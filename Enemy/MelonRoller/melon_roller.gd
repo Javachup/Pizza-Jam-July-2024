@@ -1,4 +1,4 @@
-extends AnimatableBody2D
+extends Area2D
 
 @onready var health = %Health
 

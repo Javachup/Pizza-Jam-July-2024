@@ -6,6 +6,9 @@ var is_hiding := false
 var target = null
 
 func shoot():
+	if target == null:
+		return
+
 	var dir = (target.position - position).normalized
 	var bullet = seed_bullet.instantiate() as SeedBullet
 	bullet.position = position
@@ -20,8 +23,14 @@ func reveal_corn():
 	is_hiding = false
 	$AnimatedSprite2D.scale.y = 1.0
 
+func _on_hide_area_area_entered(area):
+	hide_corn()
+
 func _on_hide_area_body_entered(body):
 	hide_corn()
+
+func _on_hide_area_area_exited(area):
+	reveal_corn()
 
 func _on_hide_area_body_exited(body):
 	reveal_corn()
