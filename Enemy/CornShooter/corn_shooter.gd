@@ -43,3 +43,6 @@ func _on_see_area_body_exited(body):
 
 func _on_shoot_timer_timeout():
 	shoot()
+
+func _on_health_on_death():
+	queue_free()
