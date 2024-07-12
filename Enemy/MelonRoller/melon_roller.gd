@@ -1,7 +1,6 @@
 extends AnimatableBody2D
 
 @onready var health = %Health
-@onready var collision_shape_2d = $RightArea/CollisionShape2D
 
 @export var speed := 300
 var direction := Vector2.LEFT :
