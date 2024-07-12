@@ -219,11 +219,14 @@ func hop_charge_physics(delta : float):
 		#if sign(global_rotation) != hopChargeDir:
 			#force.y *= -1
 			
-		#force.y *= 40
-		
 		tempSprite.global_position = (global_position + Vector2(0, -100).rotated(global_rotation)) + force
+		
+		
 		apply_force(force, global_position + Vector2(0, -100).rotated(global_rotation))
+		
 	
+		print(global_rotation_degrees)
+		print(sign(global_rotation))
 		
 		print(force)
 		
