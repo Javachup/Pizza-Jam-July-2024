@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://ditd8jmc1ofn8"]
+
+[ext_resource type="Script" path="res://Enemy/health.gd" id="1_gjujx"]
+[ext_resource type="Script" path="res://Enemy/CornShooter/corn_shooter.gd" id="1_pmlhb"]
+[ext_resource type="PackedScene" uid="uid://dmd0x3b744fu3" path="res://Enemy/SeedBullet/seed_bullet.tscn" id="2_jrr2t"]
+[ext_resource type="Texture2D" uid="uid://dh8c8f5oed2x2" path="res://Art/tileset.png" id="4_ypc7b"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wl67w"]
+atlas = ExtResource("4_ypc7b")
+region = Rect2(192, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b4tmt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wl67w")
+}],
+"loop": true,
+"name": &"Hide",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l4dgi"]
+radius = 86.0523
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lm1xe"]
+radius = 424.609
+
+[node name="CornShooter" type="Node2D"]
+script = ExtResource("1_pmlhb")
+seed_bullet = ExtResource("2_jrr2t")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("1_gjujx")
+max_health = 1
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 0.75
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.42, 1)
+sprite_frames = SubResource("SpriteFrames_b4tmt")
+animation = &"Hide"
+
+[node name="HideArea" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HideArea"]
+shape = SubResource("CircleShape2D_l4dgi")
+
+[node name="SeeArea" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SeeArea"]
+shape = SubResource("CircleShape2D_lm1xe")
+
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="body_entered" from="HideArea" to="." method="_on_hide_area_body_entered"]
+[connection signal="body_exited" from="HideArea" to="." method="_on_hide_area_body_exited"]
+[connection signal="body_entered" from="SeeArea" to="." method="_on_see_area_body_entered"]
+[connection signal="body_exited" from="SeeArea" to="." method="_on_see_area_body_exited"]
