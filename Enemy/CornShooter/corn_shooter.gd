@@ -3,9 +3,10 @@ extends Node2D
 @export var seed_bullet:PackedScene
 
 var is_hiding := false
+var target = null
 
 func shoot():
-	var dir = Vector2.RIGHT
+	var dir = (target.position - position).normalized
 	var bullet = seed_bullet.instantiate() as SeedBullet
 	bullet.position = position
 	bullet.direction = dir
@@ -13,11 +14,11 @@ func shoot():
 
 func hide_corn():
 	is_hiding = true
-	scale.y = 0.1
+	$AnimatedSprite2D.scale.y = 0.1
 
 func reveal_corn():
 	is_hiding = false
-	scale.y = 1.0
+	$AnimatedSprite2D.scale.y = 1.0
 
 func _on_hide_area_body_entered(body):
 	hide_corn()
@@ -25,6 +26,11 @@ func _on_hide_area_body_entered(body):
 func _on_hide_area_body_exited(body):
 	reveal_corn()
 
-func _unhandled_input(event):
-	if event.is_action_pressed("ui_accept"):
-		shoot()
+func _on_see_area_body_entered(body):
+	target = body
+
+func _on_see_area_body_exited(body):
+	target = null
+
+func _on_shoot_timer_timeout():
+	shoot()

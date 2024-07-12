@@ -1,14 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://f36anx7g7oxt"]
+[gd_scene load_steps=7 format=3 uid="uid://f36anx7g7oxt"]
 
 [ext_resource type="Script" path="res://Enemy/MelonRoller/melon_roller.gd" id="1_vc0aq"]
-[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="2_hxvdt"]
 [ext_resource type="Script" path="res://Enemy/health.gd" id="3_uvq7q"]
+[ext_resource type="Texture2D" uid="uid://dh8c8f5oed2x2" path="res://Art/tileset.png" id="3_w6e7h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ovyx"]
+atlas = ExtResource("3_w6e7h")
+region = Rect2(192, 32, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nvwjg"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_hxvdt")
+"texture": SubResource("AtlasTexture_1ovyx")
 }],
 "loop": true,
 "name": &"default",
@@ -16,7 +20,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0yera"]
-radius = 63.1269
+radius = 16.0
 
 [node name="MelonRoller" type="AnimatableBody2D"]
 script = ExtResource("1_vc0aq")
