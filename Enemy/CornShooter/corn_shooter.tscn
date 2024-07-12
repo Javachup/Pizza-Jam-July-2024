@@ -1,36 +1,141 @@
-[gd_scene load_steps=10 format=3 uid="uid://ditd8jmc1ofn8"]
+[gd_scene load_steps=13 format=3 uid="uid://ditd8jmc1ofn8"]
 
 [ext_resource type="Script" path="res://Enemy/health.gd" id="1_gjujx"]
 [ext_resource type="Script" path="res://Enemy/CornShooter/corn_shooter.gd" id="1_pmlhb"]
 [ext_resource type="PackedScene" uid="uid://dmd0x3b744fu3" path="res://Enemy/SeedBullet/seed_bullet.tscn" id="2_jrr2t"]
-[ext_resource type="Texture2D" uid="uid://dh8c8f5oed2x2" path="res://Art/tileset.png" id="4_ypc7b"]
+[ext_resource type="Texture2D" uid="uid://ca87o400v766b" path="res://Art/corn_shooter_sprite.png" id="4_o0m35"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_06sfi"]
 radius = 7.0
-height = 34.0
+height = 102.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wl67w"]
-atlas = ExtResource("4_ypc7b")
-region = Rect2(192, 32, 32, 32)
+[sub_resource type="Animation" id="Animation_wipyw"]
+resource_name = "Hide"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -10), Vector2(0, 90)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1.2), Vector2(1, 0.75)]
+}
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_b4tmt"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wl67w")
-}],
-"loop": true,
-"name": &"Hide",
-"speed": 5.0
-}]
+[sub_resource type="Animation" id="Animation_h32w4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fe7ff"]
+resource_name = "Show"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 90), Vector2(0, -12), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 0.75), Vector2(1, 1.2), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_cwulf"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -3), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1.05), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0qybe"]
+_data = {
+"Hide": SubResource("Animation_wipyw"),
+"Idle": SubResource("Animation_cwulf"),
+"RESET": SubResource("Animation_h32w4"),
+"Show": SubResource("Animation_fe7ff")
+}
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l4dgi"]
-radius = 86.0523
+radius = 125.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lm1xe"]
-radius = 424.609
+radius = 475.0
 
 [node name="CornShooter" type="Area2D"]
+position = Vector2(0, -53)
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_pmlhb")
@@ -47,10 +152,14 @@ autostart = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_06sfi")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.42, 1)
-sprite_frames = SubResource("SpriteFrames_b4tmt")
-animation = &"Hide"
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("4_o0m35")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_0qybe")
+}
+autoplay = "Idle"
 
 [node name="HideArea" type="Area2D" parent="."]
 collision_layer = 0
