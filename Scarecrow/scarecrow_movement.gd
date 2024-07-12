@@ -211,7 +211,8 @@ func hop_charge_physics(delta : float):
 		
 	else:
 		
-		var force = Vector2.RIGHT.rotated(global_rotation) * hopChargeDir * hopRotateSpeed * delta
+		var force = Vector2.RIGHT * hopChargeDir * hopRotateSpeed * delta
+		#var force = Vector2.RIGHT.rotated(global_rotation) * hopChargeDir * hopRotateSpeed * delta
 		
 		#if sign(global_rotation) == hopChargeDir:
 			#force *= 1
@@ -219,16 +220,22 @@ func hop_charge_physics(delta : float):
 		#if sign(global_rotation) != hopChargeDir:
 			#force.y *= -1
 			
-		tempSprite.global_position = (global_position + Vector2(0, -100).rotated(global_rotation)) + force
+		#tempSprite.global_position = (global_position + Vector2(0, -100).rotated(global_rotation)) + force.rotated(global_rotation)
 		
+		var reboundMult = 1
+		if sign(global_rotation) != hopChargeDir:
+			reboundMult = 50 * lerpf(1.0 / 50.0, 1, abs(global_rotation_degrees) / 90)
+			#print(i)
+			#force *= 100
+		#apply_torque(force.rotated(global_rotation).length() * hopChargeDir * i)
+		apply_force(force.rotated(global_rotation) * reboundMult, Vector2(0, -100).rotated(global_rotation))
 		
-		apply_force(force, global_position + Vector2(0, -100).rotated(global_rotation))
+		#print(global_rotation_degrees)
+		#print(sign(global_rotation))
 		
-	
-		print(global_rotation_degrees)
-		print(sign(global_rotation))
-		
-		print(force)
+		#print(angular_velocity)
+		#print(force.rotated(global_rotation).length() * hopChargeDir * i)
+		#print(force)
 		
 		#print(Vector2.RIGHT.rotated(global_rotation) * hopChargeDir)
 	

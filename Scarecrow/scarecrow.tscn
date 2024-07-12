@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cxapnj3dqunbn" path="res://Art/scarecrow_glide_sprite_sheet.png" id="4_s5bvt"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pfaaw"]
+bounce = 0.02
 
 [sub_resource type="Curve" id="Curve_oh6mg"]
 _data = [Vector2(0, 0), 0.0, 1.01099, 0, 1, Vector2(1, 1), 0.989011, 0.0, 1, 0]
@@ -16,6 +17,7 @@ _data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
 point_count = 2
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l2ro4"]
+radius = 2.0
 height = 119.3
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vesn1"]
@@ -227,18 +229,20 @@ _data = {
 
 [node name="ScarecrowStickBottom" type="RigidBody2D" node_paths=PackedStringArray("groundDetectPivot", "groundDetectArea", "health", "tempSprite") groups=["ScarecrowBottom"]]
 position = Vector2(0, -9)
+disable_mode = 2
 collision_layer = 2
 physics_material_override = SubResource("PhysicsMaterial_pfaaw")
 can_sleep = false
 continuous_cd = 2
 max_contacts_reported = 5
 contact_monitor = true
+constant_force = Vector2(0, -10)
 script = ExtResource("1_kq6rj")
 groundDetectPivot = NodePath("GroundDetectPivot")
 groundDetectArea = NodePath("GroundDetectPivot/GroundDetectArea")
 health = NodePath("Health")
 tempSprite = NodePath("")
-hopRotateSpeed = 1000.0
+hopRotateSpeed = 3000.0
 minHopForce = 400.0
 maxHopForce = 850.0
 minHopChargeAngle = 4.0
