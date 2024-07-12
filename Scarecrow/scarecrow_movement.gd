@@ -22,6 +22,9 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export var minHopChargeAngle : float = 10
 @export var maxHopChargeAngle : float = 45
 @export var hopChargePowerCurve : Curve # Between 0 and 1
+@export var minHopAngleAdjustment = 10
+@export var maxHopAngleAdjustment = 40
+@export var baseHopJumpForce = 200 # The base upward force wehn hopping
 
 @export_group("Super Jump Parameters")
 @export var superJumpMinChargeTime : float = .5
@@ -47,6 +50,8 @@ var superJumpChargeTime = 0
 
 # Glide vars
 var ogGravity : float = 0
+
+var hoppedThisFrame : bool = false
 
 
 func _ready() -> void:
@@ -132,46 +137,71 @@ func idle(delta : float):
 	
 func idle_physics(delta : float):
 	
-	if onGround:
-		linear_velocity.x = 0
-		angular_velocity = 0
+	if onGround and !hoppedThisFrame:
+		apply_torque(-global_rotation * idleStraightForce)
+		apply_torque(-angular_velocity * idleStraightDamp)
+		#angular_velocity = 0
+		#linear_velocity = Vector2.ZERO
+		pass
+		#linear_velocity.x = 0
+		#angular_velocity = 0
 		
 		#global_rotation = lerpf(global_rotation, 0, delta * 10)
 		
-		global_rotation = 0 	# I hate that I have to do this, it makes it look stiff, but this is the
+		#global_rotation = 0 	# I hate that I have to do this, it makes it look stiff, but this is the
 									# the only way I've found to stop a bug with the scarecrow behaving strangely
 									# when landing
 		
 	else:
+		pass
 	
-		apply_torque(-global_rotation * idleStraightForce)
-		apply_torque(-angular_velocity * idleStraightDamp)
+	apply_torque(-global_rotation * idleStraightForce)
+	apply_torque(-angular_velocity * idleStraightDamp)
+	
+	hoppedThisFrame = false
 	
 	pass
 	
 	
 func hop_charge():
-	
-	if (Input.is_action_just_released("right") and hopChargeDir > 0) or \
-		(Input.is_action_just_released("left") and hopChargeDir < 0):
-		
-		linear_velocity = Vector2.ZERO
-		angular_velocity = 0
-		
-		# Make sure we actually rotated enough to launch
-		if(abs(global_rotation_degrees) >= minHopChargeAngle):		
-			jump(Vector2.RIGHT.rotated(global_rotation) * -hopChargeDir, calculate_hop_force())
-			onGround = false			
-		
-		hopChargeDir = 0
-		currentMoveState = MoveState.IDLE
 						
 	pass
 	
 	
 func hop_charge_physics(delta : float):
 	
-	if abs(global_rotation_degrees) >= maxHopChargeAngle:
+	if (Input.is_action_just_released("right") and hopChargeDir > 0 and sign(global_rotation) == hopChargeDir) or \
+		(Input.is_action_just_released("left") and hopChargeDir < 0 and sign(global_rotation) == hopChargeDir):
+		
+		linear_velocity = Vector2.ZERO
+		angular_velocity = 0
+		
+		# Make sure we actually rotated enough to launch
+		if(abs(global_rotation_degrees) >= minHopChargeAngle):
+			#var dir : Vector2 = Vector2.RIGHT.rotated(global_rotation + 15 * -sign(global_rotation))
+			var dir : Vector2 = Vector2.RIGHT.rotated(-abs(global_rotation))
+			
+			dir.x *= -sign(hopChargeDir)
+				
+			#var anglePortion = lerpf(minHopChargeAngle, maxHopChargeAngle, 1 - calculate_hop_rot_portion())
+			dir = dir.rotated(deg_to_rad(lerpf(minHopAngleAdjustment, maxHopAngleAdjustment, \
+				1 - calculate_hop_rot_portion())) * hopChargeDir)
+			
+			
+			jump(dir, calculate_hop_force())
+			jump(Vector2.UP, 200)
+			onGround = false
+			hoppedThisFrame = true
+			
+		else:
+			global_rotation = 0
+		
+		hopChargeDir = 0
+		currentMoveState = MoveState.IDLE
+		
+		return
+	
+	if abs(global_rotation_degrees) >= maxHopChargeAngle and sign(global_rotation_degrees) == hopChargeDir:
 		angular_velocity = 0
 		linear_velocity.x = 0
 		global_rotation_degrees = clampf(global_rotation_degrees, -maxHopChargeAngle, maxHopChargeAngle)
@@ -179,13 +209,17 @@ func hop_charge_physics(delta : float):
 	else:
 		apply_torque(hopChargeDir * hopRotateSpeed * delta)
 	
-	print(global_rotation_degrees)
+	#print(global_rotation_degrees)
 		
 		
+func calculate_hop_rot_portion():
+	
+	var rotPortion = (abs(global_rotation_degrees) - minHopChargeAngle) / (maxHopChargeAngle - minHopChargeAngle)
+	return rotPortion
 	
 	
 func calculate_hop_force():
-	var rotPortion = (abs(global_rotation_degrees) - minHopChargeAngle) / (maxHopChargeAngle - minHopChargeAngle)
+	var rotPortion = calculate_hop_rot_portion()
 	var curveSamp = hopChargePowerCurve.sample(rotPortion)
 	return lerpf(minHopForce, maxHopForce, curveSamp)
 	

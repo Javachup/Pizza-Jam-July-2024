@@ -130,6 +130,8 @@ size = Vector2(192, 32)
 
 [node name="ScarecrowStickBottom" parent="." instance=ExtResource("1_tc3d0")]
 position = Vector2(-2219, -24)
+constant_force = Vector2(0, -10)
+maxHopAngleAdjustment = 20
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_447sb")
