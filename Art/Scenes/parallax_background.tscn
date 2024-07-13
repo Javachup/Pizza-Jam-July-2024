@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=3 uid="uid://ct2o044tuqgc5"]
+
+[ext_resource type="Texture2D" uid="uid://wb1u5d3floyh" path="res://Art/sky_sprite.png" id="1_ge16p"]
+[ext_resource type="Texture2D" uid="uid://bodaaoh75vp2r" path="res://Art/base_clouds_sprite.png" id="2_1125d"]
+[ext_resource type="Texture2D" uid="uid://dxspd7dt14rbv" path="res://Art/cloud_01_sprite.png" id="3_ep5im"]
+[ext_resource type="Texture2D" uid="uid://b8jqiiys5r4xs" path="res://Art/cloud_02_sprite.png" id="4_spi6e"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+
+[node name="Sky" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(1, 0)
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Sky"]
+texture = ExtResource("1_ge16p")
+centered = false
+
+[node name="CloudsBase" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.3, 0.1)
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="CloudsBase"]
+texture = ExtResource("2_1125d")
+centered = false
+
+[node name="CloudsMid" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.5, 0.2)
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="CloudsMid"]
+position = Vector2(219, 204)
+texture = ExtResource("3_ep5im")
+
+[node name="Sprite2D2" type="Sprite2D" parent="CloudsMid"]
+position = Vector2(512, 271)
+texture = ExtResource("4_spi6e")
+
+[node name="Sprite2D3" type="Sprite2D" parent="CloudsMid"]
+position = Vector2(1028, 115)
+texture = ExtResource("4_spi6e")
+
+[node name="Sprite2D4" type="Sprite2D" parent="CloudsMid"]
+position = Vector2(1340, 337)
+texture = ExtResource("3_ep5im")
+
+[node name="Sprite2D5" type="Sprite2D" parent="CloudsMid"]
+position = Vector2(1686, 116)
+texture = ExtResource("3_ep5im")
+
+[node name="CloudsClose" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.7, 0.3)
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="CloudsClose"]
+position = Vector2(244, 123)
+texture = ExtResource("3_ep5im")
+
+[node name="Sprite2D2" type="Sprite2D" parent="CloudsClose"]
+position = Vector2(917, 372)
+texture = ExtResource("3_ep5im")
+
+[node name="Sprite2D3" type="Sprite2D" parent="CloudsClose"]
+position = Vector2(1648, 279)
+texture = ExtResource("3_ep5im")
+
+[node name="Sprite2D4" type="Sprite2D" parent="CloudsClose"]
+position = Vector2(428, 265)
+texture = ExtResource("4_spi6e")
+
+[node name="Sprite2D5" type="Sprite2D" parent="CloudsClose"]
+position = Vector2(1098, 124)
+texture = ExtResource("4_spi6e")
+
+[node name="Sprite2D6" type="Sprite2D" parent="CloudsClose"]
+position = Vector2(1859, 389)
+texture = ExtResource("4_spi6e")
