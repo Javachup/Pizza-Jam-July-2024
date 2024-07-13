@@ -4,6 +4,7 @@ extends Node2D
 
 @onready var animation_player = %AnimationPlayer
 @onready var shoot_timer = %ShootTimer
+@onready var shoot_location = %ShootLocation
 
 var is_hiding := false
 var target = null
@@ -16,7 +17,7 @@ func shoot():
 
 	var dir = (target.position - position).normalized()
 	var bullet = seed_bullet.instantiate() as SeedBullet
-	bullet.position = position
+	bullet.position = shoot_location.global_position
 	bullet.direction = dir
 	get_tree().root.add_child(bullet)
 

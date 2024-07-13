@@ -183,6 +183,10 @@ collision_mask = 0
 script = ExtResource("1_pmlhb")
 seed_bullet = ExtResource("2_jrr2t")
 
+[node name="ShootLocation" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -33)
+
 [node name="Health" type="Node" parent="."]
 script = ExtResource("1_gjujx")
 max_health = 1
