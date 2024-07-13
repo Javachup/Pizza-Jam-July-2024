@@ -21,4 +21,7 @@ visible = false
 position = Vector2(-106, 110)
 
 [node name="MelonRoller" parent="." instance=ExtResource("1_nw2f5")]
-position = Vector2(8, -108)
+position = Vector2(391, 111)
+
+[node name="ScarecrowStickBottom" parent="." instance=ExtResource("4_5swrc")]
+position = Vector2(211, 83)

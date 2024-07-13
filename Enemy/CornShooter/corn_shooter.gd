@@ -2,6 +2,11 @@ extends Node2D
 
 @export var seed_bullet:PackedScene
 
+@onready var animation_player = %AnimationPlayer
+@onready var shoot_timer = %ShootTimer
+@onready var shoot_location = %ShootLocation
+@onready var sprite_2d = %Sprite2D
+
 var is_hiding := false
 var target = null
 
@@ -13,17 +18,29 @@ func shoot():
 
 	var dir = (target.position - position).normalized()
 	var bullet = seed_bullet.instantiate() as SeedBullet
-	bullet.position = position
+	bullet.position = shoot_location.global_position
 	bullet.direction = dir
 	get_tree().root.add_child(bullet)
 
+func set_is_hiding(value:bool):
+	is_hiding = value
+
 func hide_corn():
-	is_hiding = true
-	$Sprite2D.scale.y = 0.1
+	shoot_timer.paused = true
+	animation_player.play("Hide")
+	# is_hiding set in the animation itself
 
 func reveal_corn():
-	is_hiding = false
-	$Sprite2D.scale.y = 1.0
+	shoot_timer.paused = false
+	animation_player.play("Show")
+	# is_hiding set in the animation itself
+	# Idle animation played in the animation itself
+
+func _process(_delta):
+	if target == null:
+		return
+
+	sprite_2d.flip_h = target.global_position.x > global_position.x
 
 func _on_hide_area_area_entered(area):
 	hide_corn()
