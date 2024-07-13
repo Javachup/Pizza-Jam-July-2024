@@ -227,7 +227,7 @@ _data = {
 "RESET": SubResource("Animation_ljduj")
 }
 
-[node name="ScarecrowStickBottom" type="RigidBody2D" node_paths=PackedStringArray("groundDetectPivot", "groundDetectArea", "health", "tempSprite") groups=["ScarecrowBottom"]]
+[node name="ScarecrowStickBottom" type="RigidBody2D" node_paths=PackedStringArray("groundDetectPivot", "groundDetectArea", "health") groups=["ScarecrowBottom"]]
 position = Vector2(0, -9)
 disable_mode = 2
 collision_layer = 2
@@ -241,12 +241,12 @@ script = ExtResource("1_kq6rj")
 groundDetectPivot = NodePath("GroundDetectPivot")
 groundDetectArea = NodePath("GroundDetectPivot/GroundDetectArea")
 health = NodePath("Health")
-tempSprite = NodePath("")
 hopRotateSpeed = 3000.0
 minHopForce = 400.0
 maxHopForce = 850.0
 minHopChargeAngle = 4.0
 hopChargePowerCurve = SubResource("Curve_oh6mg")
+maxHopReboundMult = 30
 superJumpMaxChargeTime = 1.5
 superJumpMinForce = 500.0
 superJumpMaxForce = 1000.0

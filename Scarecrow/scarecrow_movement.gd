@@ -10,7 +10,6 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export var groundDetectPivot : Node2D
 @export var groundDetectArea : Area2D
 @export var health : Health
-@export var tempSprite : Sprite2D
 
 @export_group("Idle Parameters")
 @export var idleStraightForce : float = 40000
@@ -26,6 +25,8 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export var minHopAngleAdjustment = 10
 @export var maxHopAngleAdjustment = 40
 @export var baseHopJumpForce = 200 # The base upward force wehn hopping
+@export var maxHopReboundMult = 50
+@export var verticalHopForce = 100
 
 @export_group("Super Jump Parameters")
 @export var superJumpMinChargeTime : float = .5
@@ -192,7 +193,7 @@ func hop_charge_physics(delta : float):
 			
 			
 			jump(dir, calculate_hop_force())
-			jump(Vector2.UP, 200)
+			jump(Vector2.UP, verticalHopForce)
 			onGround = false
 			hoppedThisFrame = true
 			
@@ -224,7 +225,7 @@ func hop_charge_physics(delta : float):
 		
 		var reboundMult = 1
 		if sign(global_rotation) != hopChargeDir:
-			reboundMult = 50 * lerpf(1.0 / 50.0, 1, abs(global_rotation_degrees) / 90)
+			reboundMult = maxHopReboundMult * lerpf(1.0 / maxHopReboundMult, 1, abs(global_rotation_degrees) / 90)
 			#print(i)
 			#force *= 100
 		#apply_torque(force.rotated(global_rotation).length() * hopChargeDir * i)
