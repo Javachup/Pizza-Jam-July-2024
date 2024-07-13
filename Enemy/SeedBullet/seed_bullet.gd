@@ -2,6 +2,9 @@ class_name SeedBullet
 extends AnimatableBody2D
 
 @export var speed := 100
+@export var damage := 3
+
+
 var direction := Vector2.ZERO :
 	set(value):
 		direction = value.normalized()
