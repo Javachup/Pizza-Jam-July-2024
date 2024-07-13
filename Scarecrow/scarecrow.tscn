@@ -283,13 +283,15 @@ shape = SubResource("CapsuleShape2D_vesn1")
 position = Vector2(0, -84)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ScarecrowBody"]
+unique_name_in_owner = true
 position = Vector2(4, 35)
 sprite_frames = SubResource("SpriteFrames_00dqo")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.677223
+frame_progress = 0.00908114
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="ScarecrowBody/AnimatedSprite2D"]
+unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_ngsii")
 }

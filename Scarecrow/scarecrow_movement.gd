@@ -4,7 +4,14 @@ extends RigidBody2D
 
 # States that the scarecrow can be in, mutually exclusive
 enum MoveState { IDLE, HOP_CHARGE, SUPER_JUMP_CHARGE, GLIDE, STOMP } 
-var currentMoveState : MoveState = MoveState.IDLE
+var currentMoveState : MoveState = MoveState.IDLE :
+	set(value):
+		if value != currentMoveState:
+			_on_move_state_changed(currentMoveState, value)
+			currentMoveState = value
+
+@onready var anim_sprite = %AnimatedSprite2D
+@onready var anim_player = %AnimationPlayer
 
 @export_group("References")
 @export var groundDetectPivot : Node2D
@@ -375,3 +382,16 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 		health.take_damage(melonRoller.damage)
 		
 		iFrameTimePassed = 0
+
+func _on_move_state_changed(previous_state:MoveState, new_state:MoveState):
+	match new_state:
+		MoveState.IDLE:
+			anim_sprite.play("idle")
+		MoveState.GLIDE:
+			anim_sprite.play("glide")
+		MoveState.SUPER_JUMP_CHARGE:
+			anim_player.play("Charge")
+	
+	match previous_state:
+		MoveState.SUPER_JUMP_CHARGE:
+			anim_player.play("Jump")
