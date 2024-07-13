@@ -1,34 +1,142 @@
-[gd_scene load_steps=8 format=3 uid="uid://f36anx7g7oxt"]
+[gd_scene load_steps=9 format=3 uid="uid://f36anx7g7oxt"]
 
 [ext_resource type="Script" path="res://Enemy/MelonRoller/melon_roller.gd" id="1_vc0aq"]
+[ext_resource type="Texture2D" uid="uid://cnaf6jnnqqsbr" path="res://Art/watermelon_roller_sprite.png" id="3_ec6jd"]
 [ext_resource type="Script" path="res://Enemy/health.gd" id="3_uvq7q"]
-[ext_resource type="Texture2D" uid="uid://dh8c8f5oed2x2" path="res://Art/tileset.png" id="3_w6e7h"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1ovyx"]
-atlas = ExtResource("3_w6e7h")
-region = Rect2(192, 32, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nvwjg"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1ovyx")
+"texture": ExtResource("3_ec6jd")
 }],
 "loop": true,
 "name": &"default",
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_txlfo"]
+resource_name = "Roll"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -4), Vector2(0, 0), Vector2(0, -2), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:skew")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_2y3ic"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:skew")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aj2nm"]
+_data = {
+"RESET": SubResource("Animation_2y3ic"),
+"Roll": SubResource("Animation_txlfo")
+}
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_0yera"]
-radius = 16.0
+radius = 19.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a0um1"]
 size = Vector2(8, 40)
 
 [node name="MelonRoller" type="Area2D"]
+position = Vector2(0, -21)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_vc0aq")
+speed = 100
 
 [node name="Health" type="Node" parent="."]
 unique_name_in_owner = true
@@ -37,6 +145,12 @@ max_health = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_nvwjg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_aj2nm")
+}
+autoplay = "Roll"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0yera")
