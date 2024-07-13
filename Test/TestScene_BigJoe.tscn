@@ -315,7 +315,6 @@ zoom = Vector2(0.47, 0.47)
 position = Vector2(-3183, -288)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-visible = false
 script = ExtResource("2_xjde7")
 tilemap_nodepath = NodePath("../TileMap")
 

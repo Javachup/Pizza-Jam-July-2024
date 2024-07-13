@@ -14,6 +14,7 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export_group("Idle Parameters")
 @export var idleStraightForce : float = 40000
 @export var idleStraightDamp : float = 4000
+@export var inAirControl : float = 4000
 
 @export_group("Hop Parameters")
 @export var hopRotateSpeed : float = 100
@@ -44,6 +45,9 @@ var currentMoveState : MoveState = MoveState.IDLE
 
 var onGround : bool = false
 
+# Idle vars
+var ogFriction : float = 0
+
 # Hop vars
 var hopChargeDir : int = 0
 
@@ -58,13 +62,12 @@ var hoppedThisFrame : bool = false
 
 func _ready() -> void:
 	ogGravity = gravity_scale
+	ogFriction = physics_material_override.friction
 
 	
 func _process(delta: float) -> void:
 	
 	groundDetectPivot.global_rotation = 0 # Make sure ground detect area is always facing downward
-	
-	#print(MoveState.keys()[currentMoveState])
 	
 	match currentMoveState:
 		MoveState.IDLE:
@@ -111,6 +114,8 @@ func idle(delta : float):
 	
 	if onGround:
 		
+		physics_material_override.friction = ogFriction
+		
 		# Check for hop input
 		# chargeDir will be -1 for left, 0 for neither / both, 1 for right
 		hopChargeDir = int(Input.is_action_just_pressed("right")) - int(Input.is_action_just_pressed("left"))
@@ -125,6 +130,9 @@ func idle(delta : float):
 			return
 	
 	else:	
+		
+		physics_material_override.friction = 0
+		
 		# Check for glide input
 		if linear_velocity.y > 0 and Input.is_action_pressed("glide"):
 			currentMoveState = MoveState.GLIDE
@@ -157,6 +165,8 @@ func idle_physics(delta : float):
 									# when landing
 		
 	else:
+		var input := int(Input.is_action_pressed("right")) - int(Input.is_action_pressed("left"))
+		apply_force(Vector2.RIGHT * input * inAirControl * delta)
 		pass
 	
 	apply_torque(-global_rotation * idleStraightForce)
@@ -174,8 +184,8 @@ func hop_charge():
 	
 func hop_charge_physics(delta : float):
 	
-	if (Input.is_action_just_released("right") and hopChargeDir > 0 and sign(global_rotation) == hopChargeDir) or \
-		(Input.is_action_just_released("left") and hopChargeDir < 0 and sign(global_rotation) == hopChargeDir):
+	if (!Input.is_action_pressed("right") and hopChargeDir > 0 and sign(global_rotation) == hopChargeDir) or \
+		(!Input.is_action_pressed("left") and hopChargeDir < 0 and sign(global_rotation) == hopChargeDir):
 		
 		linear_velocity = Vector2.ZERO
 		angular_velocity = 0
@@ -271,6 +281,8 @@ func super_jump_charge(delta : float):
 	
 	
 func super_jump_charge_physics(delta : float):
+	apply_torque(-global_rotation * idleStraightForce * 10)
+	apply_torque(-angular_velocity * idleStraightDamp * 10)
 	pass
 	
 	
@@ -334,3 +346,10 @@ func _on_ground_detect_area_body_entered(body: Node2D) -> void:
 	
 func _on_ground_detect_area_body_exited(body: Node2D) -> void:
 	onGround = false
+
+
+func _on_hit_box_body_entered(body: Node2D) -> void:
+	var bullet = body as SeedBullet
+	health.take_damage(bullet.damage)
+	
+	pass # Replace with function body.
