@@ -1,3 +1,5 @@
+class_name MelonRoller
+
 extends Area2D
 
 @onready var health = %Health
@@ -5,7 +7,10 @@ extends Area2D
 @onready var left_area = %LeftArea
 @onready var roll_animation_player = %RollAnimationPlayer
 
+
 @export var speed := 100
+@export var damage := 2
+
 var direction := Vector2.LEFT :
 	set(value):
 		direction = value.normalized()

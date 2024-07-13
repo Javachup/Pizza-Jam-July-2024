@@ -309,7 +309,7 @@ shape = SubResource("CapsuleShape2D_tk7d2")
 [node name="HitBox" type="Area2D" parent="."]
 position = Vector2(0, -50)
 collision_layer = 2
-collision_mask = 32
+collision_mask = 36
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 shape = SubResource("CapsuleShape2D_jandp")
@@ -318,4 +318,5 @@ debug_color = Color(0.733342, 0.22974, 1, 0.42)
 [connection signal="body_entered" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_entered"]
 [connection signal="body_exited" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_exited"]
 [connection signal="on_death" from="Health" to="." method="on_die"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
