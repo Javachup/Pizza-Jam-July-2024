@@ -15,6 +15,10 @@ run/main_scene="res://Prototype/Scenes/level1.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://Prototype/Art/icon.svg"
 
+[audio]
+
+buses/default_bus_layout="res://Sounds/Buses/default_bus_layout.tres"
+
 [dotnet]
 
 project/assembly_name="PizzaJam"

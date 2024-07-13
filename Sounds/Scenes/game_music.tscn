@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://y1lja75pw0it"]
+
+[ext_resource type="AudioStream" uid="uid://bi0hlfku13u8m" path="res://Sounds/Music/Scarecrow_Theme_03_LOOP.mp3" id="1_4pqb1"]
+
+[node name="GameMusic" type="AudioStreamPlayer"]
+stream = ExtResource("1_4pqb1")
+autoplay = true
+bus = &"Music"
