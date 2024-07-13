@@ -5,6 +5,7 @@ extends Node2D
 @onready var animation_player = %AnimationPlayer
 @onready var shoot_timer = %ShootTimer
 @onready var shoot_location = %ShootLocation
+@onready var sprite_2d = %Sprite2D
 
 var is_hiding := false
 var target = null
@@ -34,6 +35,12 @@ func reveal_corn():
 	animation_player.play("Show")
 	# is_hiding set in the animation itself
 	# Idle animation played in the animation itself
+
+func _process(_delta):
+	if target == null:
+		return
+
+	sprite_2d.flip_h = target.global_position.x > global_position.x
 
 func _on_hide_area_area_entered(area):
 	hide_corn()
