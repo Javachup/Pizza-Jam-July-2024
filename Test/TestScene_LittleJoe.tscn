@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsclo1ly2eqdp"]
+
+[ext_resource type="PackedScene" uid="uid://f36anx7g7oxt" path="res://Enemy/MelonRoller/melon_roller.tscn" id="1_nw2f5"]
+[ext_resource type="PackedScene" uid="uid://ditd8jmc1ofn8" path="res://Enemy/CornShooter/corn_shooter.tscn" id="2_vm7x6"]
+[ext_resource type="TileSet" uid="uid://cup4c8275jnpj" path="res://Art/level_tileset.tres" id="4_4tc43"]
+[ext_resource type="PackedScene" uid="uid://0wd3a6g2sqqg" path="res://Scarecrow/scarecrow.tscn" id="4_5swrc"]
+
+[node name="TestScene" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -82)
+zoom = Vector2(2.695, 2.695)
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("4_4tc43")
+format = 2
+layer_0/tile_data = PackedInt32Array(262161, 65536, 0, 262160, 65536, 0, 262159, 65536, 0, 262158, 65536, 0, 262157, 65536, 0, 262156, 65536, 0, 262155, 65536, 0, 262154, 65536, 0, 262153, 65536, 0, 262152, 65536, 0, 262151, 65536, 0, 262150, 65536, 0, 262149, 65536, 0, 262148, 65536, 0, 262147, 65536, 0, 262146, 65536, 0, 262145, 65536, 0, 262144, 65536, 0, 327679, 65536, 0, 327678, 65536, 0, 327677, 65536, 0, 327676, 65536, 0, 327675, 65536, 0, 327674, 65536, 0, 327673, 65536, 0, 327672, 65536, 0, 327671, 65536, 0, 327670, 65536, 0, 327669, 65536, 0, 327668, 65536, 0, 327667, 65536, 0, 327666, 65536, 0, 327665, 65536, 0, 327664, 65536, 0, 327663, 65536, 0, 327662, 65536, 0, -65538, 65536, 0, -65537, 65536, 0, -131072, 65536, 0, -131071, 65536, 0, -131070, 65536, 0, -65539, 65536, 0, -65540, 65536, 0, -65541, 65536, 0, -131069, 65536, 0)
+
+[node name="CornShooter" parent="." instance=ExtResource("2_vm7x6")]
+visible = false
+position = Vector2(-106, 110)
+
+[node name="MelonRoller" parent="." instance=ExtResource("1_nw2f5")]
+position = Vector2(391, 111)
+
+[node name="ScarecrowStickBottom" parent="." instance=ExtResource("4_5swrc")]
+position = Vector2(211, 83)

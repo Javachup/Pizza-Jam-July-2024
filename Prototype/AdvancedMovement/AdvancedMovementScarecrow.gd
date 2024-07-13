@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-class_name Scarecrow
+class_name PrototypeScarecrow
 
 
 @export var bottom: RigidBody2D
@@ -75,7 +75,7 @@ func _physics_process(delta: float) -> void:
 	
 	sprite.global_rotation = bottom.global_rotation
 	
-	
+	print(global_rotation_degrees)
 	
 	if Input.is_action_just_pressed("right") and onFloor:
 		apply_force(Vector2.RIGHT.rotated(global_rotation) * rotateSpeed)

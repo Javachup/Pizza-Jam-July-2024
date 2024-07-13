@@ -1,18 +1,18 @@
 [gd_scene load_steps=4 format=3 uid="uid://dmd0x3b744fu3"]
 
 [ext_resource type="Script" path="res://Enemy/SeedBullet/seed_bullet.gd" id="1_3sinr"]
-[ext_resource type="Texture2D" uid="uid://c5t650xnlo724" path="res://Prototype/Art/icon.svg" id="1_qjgp3"]
+[ext_resource type="Texture2D" uid="uid://cnyixe380pmn7" path="res://Art/kernel_bullet_sprite.png" id="2_5u3wb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lusi2"]
-radius = 13.0384
+radius = 3.0
 
 [node name="SeedBullet" type="AnimatableBody2D"]
-collision_layer = 0
+collision_layer = 32
+collision_mask = 0
 script = ExtResource("1_3sinr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("1_qjgp3")
+texture = ExtResource("2_5u3wb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_lusi2")

@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://77xy3xqxo0h3"]
+
+[ext_resource type="PackedScene" uid="uid://0wd3a6g2sqqg" path="res://Scarecrow/scarecrow.tscn" id="1_18qet"]
+[ext_resource type="Script" path="res://Test/test_damage.gd" id="2_sx4e3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ch3e"]
+size = Vector2(10000, 1000)
+
+[node name="TestMovementWorld" type="Node"]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(683, 1127)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_5ch3e")
+
+[node name="Polygon2D" type="Polygon2D" parent="Floor"]
+scale = Vector2(10000, 1000)
+color = Color(0.631373, 0.529412, 0.0745098, 1)
+polygon = PackedVector2Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(488, 78)
+zoom = Vector2(0.505, 0.505)
+
+[node name="Scarecrow" parent="." instance=ExtResource("1_18qet")]
+position = Vector2(474, 232)
+
+[node name="TestDamage" type="Node" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("2_sx4e3")
+player = NodePath("../Scarecrow")

@@ -62,6 +62,7 @@ shape = SubResource("CircleShape2D_r442b")
 [node name="PinJoint2D" type="PinJoint2D" parent="ScarecrowBody"]
 node_a = NodePath("..")
 node_b = NodePath("../ScarecrowStickBottom")
+softness = 16.0
 
 [node name="ScarecrowStickBottom" type="RigidBody2D" parent="ScarecrowBody" node_paths=PackedStringArray("scarecrow") groups=["ScarecrowBottom"]]
 position = Vector2(0, 210)
