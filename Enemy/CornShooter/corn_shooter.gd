@@ -6,8 +6,9 @@ extends Node2D
 @onready var shoot_timer = %ShootTimer
 @onready var shoot_location = %ShootLocation
 @onready var sprite_2d = %Sprite2D
+@onready var hide_area = %HideArea
 
-var is_hiding := false
+var is_hiding := false # When the enemy should/shouldn't take damage
 var target = null
 
 func shoot():
@@ -36,23 +37,21 @@ func reveal_corn():
 	# is_hiding set in the animation itself
 	# Idle animation played in the animation itself
 
+func _get_should_hide() -> bool:
+	return hide_area.has_overlapping_bodies() or hide_area.has_overlapping_areas()
+
 func _process(_delta):
 	if target == null:
 		return
 
 	sprite_2d.flip_h = target.global_position.x > global_position.x
 
-func _on_hide_area_area_entered(area):
-	hide_corn()
-
-func _on_hide_area_body_entered(body):
-	hide_corn()
-
-func _on_hide_area_area_exited(area):
-	reveal_corn()
-
-func _on_hide_area_body_exited(body):
-	reveal_corn()
+func _physics_process(_delta):
+	if _get_should_hide() != is_hiding:
+		if is_hiding:
+			reveal_corn()
+		else:
+			hide_corn()
 
 func _on_see_area_body_entered(body):
 	target = body
