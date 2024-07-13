@@ -1,3 +1,5 @@
+class_name Scarecrow
+
 extends RigidBody2D
 
 # States that the scarecrow can be in, mutually exclusive
@@ -7,6 +9,7 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export_group("References")
 @export var groundDetectPivot : Node2D
 @export var groundDetectArea : Area2D
+@export var health : Health
 
 @export_group("Idle Parameters")
 @export var idleStraightForce : float = 40000
@@ -175,6 +178,9 @@ func hop_charge_physics(delta : float):
 		
 	else:
 		apply_torque(hopChargeDir * hopRotateSpeed * delta)
+	
+	print(global_rotation_degrees)
+		
 		
 	
 	
@@ -248,6 +254,11 @@ func stomp_physics(delta : float):
 	
 func jump(dir : Vector2, force : float):
 	apply_impulse(dir * force)
+	pass
+	
+	
+func on_die():
+	print("dead!")
 	pass
 	
 
