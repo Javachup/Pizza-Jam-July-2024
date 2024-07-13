@@ -23,3 +23,9 @@ func _physics_process(delta):
 
 func _on_health_on_death():
 	queue_free()
+
+func _on_enter_area_body_entered(body):
+	if direction == Vector2.LEFT:
+		direction = Vector2.RIGHT
+	else:
+		direction = Vector2.LEFT
