@@ -15,6 +15,7 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export var idleStraightForce : float = 40000
 @export var idleStraightDamp : float = 4000
 @export var inAirControl : float = 4000
+@export var slipperyFactor : float = 2 # Higher the number, higher the slowdown while on ground
 
 @export_group("Hop Parameters")
 @export var hopRotateSpeed : float = 100
@@ -25,9 +26,8 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export var hopChargePowerCurve : Curve # Between 0 and 1
 @export var minHopAngleAdjustment = 10
 @export var maxHopAngleAdjustment = 40
-@export var baseHopJumpForce = 200 # The base upward force wehn hopping
-@export var maxHopReboundMult = 50
-@export var verticalHopForce = 100
+@export var maxHopReboundMult = 50 
+@export var verticalHopForce = 100 # The base upward force when hopping
 
 @export_group("Super Jump Parameters")
 @export var superJumpMinChargeTime : float = .5
@@ -158,6 +158,7 @@ func idle_physics(delta : float):
 	if onGround and !hoppedThisFrame:
 		apply_torque(-global_rotation * idleStraightForce)
 		apply_torque(-angular_velocity * idleStraightDamp)
+		linear_velocity.x /= 1 + (delta * slipperyFactor)
 		#angular_velocity = 0
 		#linear_velocity = Vector2.ZERO
 		pass
