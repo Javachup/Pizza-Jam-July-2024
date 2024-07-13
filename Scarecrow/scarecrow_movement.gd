@@ -43,6 +43,9 @@ var currentMoveState : MoveState = MoveState.IDLE
 @export_group("Stomp Parameters")
 @export var stompSpeed : float = 1000
 
+@export_group("Misc")
+@export var iFrameTime : float = 3
+
 var onGround : bool = false
 
 # Idle vars
@@ -59,15 +62,18 @@ var ogGravity : float = 0
 
 var hoppedThisFrame : bool = false
 
+var iFrameTimePassed : float = 0
+
 
 func _ready() -> void:
 	ogGravity = gravity_scale
 	ogFriction = physics_material_override.friction
-
+	iFrameTimePassed = iFrameTime
 	
 func _process(delta: float) -> void:
 	
 	groundDetectPivot.global_rotation = 0 # Make sure ground detect area is always facing downward
+	iFrameTimePassed += delta
 	
 	match currentMoveState:
 		MoveState.IDLE:
@@ -350,7 +356,22 @@ func _on_ground_detect_area_body_exited(body: Node2D) -> void:
 
 
 func _on_hit_box_body_entered(body: Node2D) -> void:
-	var bullet = body as SeedBullet
-	health.take_damage(bullet.damage)
+	
+	if body is SeedBullet and iFrameTimePassed >= iFrameTime:
+		var bullet = body as SeedBullet
+		health.take_damage(bullet.damage)
+		
+		bullet.queue_free()
+		
+		iFrameTimePassed = 0
 	
 	pass # Replace with function body.
+
+
+func _on_hit_box_area_entered(area: Area2D) -> void:
+	
+	if area is MelonRoller and iFrameTimePassed >= iFrameTime:
+		var melonRoller = area as MelonRoller
+		health.take_damage(melonRoller.damage)
+		
+		iFrameTimePassed = 0

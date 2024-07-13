@@ -7,9 +7,10 @@ extends Node
 signal on_death
 
 func take_damage(damage_amount := 1):
-	print(get_parent().name + " took " + str(damage_amount) + ", and now has " + str(health) + " health")
 	
 	health -= damage_amount
 
+	print(get_parent().name + " took " + str(damage_amount) + ", and now has " + str(health) + " health")
+	
 	if health <= 0:
 		on_death.emit()
