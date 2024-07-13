@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://f36anx7g7oxt"]
+[gd_scene load_steps=11 format=3 uid="uid://f36anx7g7oxt"]
 
 [ext_resource type="Script" path="res://Enemy/MelonRoller/melon_roller.gd" id="1_vc0aq"]
 [ext_resource type="Texture2D" uid="uid://cnaf6jnnqqsbr" path="res://Art/watermelon_roller_sprite.png" id="3_ec6jd"]
@@ -129,12 +129,14 @@ _data = {
 radius = 19.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a0um1"]
-size = Vector2(8, 40)
+size = Vector2(8, 52)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f2qkg"]
+size = Vector2(46, 12)
 
 [node name="MelonRoller" type="Area2D"]
 position = Vector2(0, -21)
 collision_layer = 4
-collision_mask = 0
 script = ExtResource("1_vc0aq")
 
 [node name="Health" type="Node" parent="."]
@@ -155,20 +157,29 @@ autoplay = "Roll"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0yera")
 
-[node name="RightArea" type="Area2D" parent="."]
+[node name="ExitAreas" type="Node2D" parent="."]
+
+[node name="RightArea" type="Area2D" parent="ExitAreas"]
 unique_name_in_owner = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitAreas/RightArea"]
 position = Vector2(22, 0)
 shape = SubResource("RectangleShape2D_a0um1")
 
-[node name="LeftArea" type="Area2D" parent="."]
+[node name="LeftArea" type="Area2D" parent="ExitAreas"]
 unique_name_in_owner = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitAreas/LeftArea"]
 position = Vector2(-22, 0)
 shape = SubResource("RectangleShape2D_a0um1")
 
+[node name="EnterArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnterArea"]
+shape = SubResource("RectangleShape2D_f2qkg")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="on_death" from="Health" to="." method="_on_health_on_death"]
-[connection signal="body_shape_exited" from="RightArea" to="." method="_on_right_area_body_shape_exited"]
-[connection signal="body_shape_exited" from="LeftArea" to="." method="_on_left_area_body_shape_exited"]
+[connection signal="body_shape_exited" from="ExitAreas/RightArea" to="." method="_on_right_area_body_shape_exited"]
+[connection signal="body_shape_exited" from="ExitAreas/LeftArea" to="." method="_on_left_area_body_shape_exited"]
+[connection signal="body_entered" from="EnterArea" to="." method="_on_enter_area_body_entered"]
