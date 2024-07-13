@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var seed_bullet:PackedScene
+@export var health : Health
 
 @onready var animation_player = %AnimationPlayer
 @onready var shoot_timer = %ShootTimer
@@ -56,7 +57,7 @@ func _physics_process(_delta):
 func _on_see_area_body_entered(body):
 	target = body
 
-func _on_see_area_body_exited(body):
+func _on_see_area_body_exited(_body):
 	target = null
 
 func _on_shoot_timer_timeout():

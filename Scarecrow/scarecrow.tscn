@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://0wd3a6g2sqqg"]
+[gd_scene load_steps=22 format=3 uid="uid://0wd3a6g2sqqg"]
 
 [ext_resource type="Script" path="res://Scarecrow/scarecrow_movement.gd" id="1_kq6rj"]
 [ext_resource type="Script" path="res://Enemy/health.gd" id="3_v65y4"]
@@ -64,7 +64,7 @@ animations = [{
 
 [sub_resource type="Animation" id="Animation_srxsn"]
 resource_name = "Hop"
-length = 0.5
+length = 1.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -72,7 +72,7 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 1.24),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(4, 35), Vector2(0, 65)]
@@ -96,7 +96,7 @@ tracks/2/path = NodePath(".:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 1.24),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1, 0.5)]
@@ -108,7 +108,7 @@ tracks/3/path = NodePath(".:skew")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 1.24),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, -0.174533]
@@ -232,10 +232,13 @@ height = 110.0
 radius = 4.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jandp"]
-radius = 4.0
+radius = 6.0
 height = 102.04
 
-[node name="ScarecrowStickBottom" type="RigidBody2D" node_paths=PackedStringArray("groundDetectPivot", "groundDetectArea", "health") groups=["ScarecrowBottom"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_uklsa"]
+radius = 15.0
+
+[node name="ScarecrowStickBottom" type="RigidBody2D" node_paths=PackedStringArray("groundDetectPivot", "groundDetectArea", "health", "healthBar") groups=["ScarecrowBottom"]]
 position = Vector2(0, -9)
 disable_mode = 2
 collision_layer = 2
@@ -249,6 +252,7 @@ script = ExtResource("1_kq6rj")
 groundDetectPivot = NodePath("GroundDetectPivot")
 groundDetectArea = NodePath("GroundDetectPivot/GroundDetectArea")
 health = NodePath("Health")
+healthBar = NodePath("CanvasLayer/HealthBar")
 idleStraightForce = 70000.0
 idleStraightDamp = 5000.0
 inAirControl = 10000.0
@@ -268,6 +272,7 @@ superJumpForceCurve = SubResource("Curve_ck03k")
 glideSpeed = 5000.0
 glideGravityMult = 0.1
 stompSpeed = 5000.0
+stompBounceOffEnemyForce = 50000.0
 
 [node name="GroundDetectPivot" type="Node2D" parent="."]
 
@@ -314,17 +319,35 @@ position = Vector2(0, -66.84)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_tk7d2")
 
-[node name="HitBox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="."]
 position = Vector2(0, -50)
 collision_layer = 2
 collision_mask = 36
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("CapsuleShape2D_jandp")
 debug_color = Color(0.733342, 0.22974, 1, 0.42)
+
+[node name="HitBox" type="Area2D" parent="."]
+position = Vector2(0, -7)
+collision_layer = 0
+collision_mask = 12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, 6)
+shape = SubResource("CircleShape2D_uklsa")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer"]
+offset_left = 19.0
+offset_top = 13.0
+offset_right = 306.0
+offset_bottom = 55.0
 
 [connection signal="body_entered" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_entered"]
 [connection signal="body_exited" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_exited"]
 [connection signal="on_death" from="Health" to="." method="on_die"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurt_box_area_entered"]
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurt_box_body_entered"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
-[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
