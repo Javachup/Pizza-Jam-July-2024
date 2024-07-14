@@ -154,6 +154,7 @@ text = "Main"
 flat = true
 
 [node name="Button2" parent="." instance=ExtResource("3_jemal")]
+layout_mode = 0
 offset_left = 500.0
 offset_top = 490.0
 offset_right = 647.0

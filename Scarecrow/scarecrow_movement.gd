@@ -252,6 +252,13 @@ func hop_charge_physics(delta : float):
 		currentMoveState = MoveState.IDLE
 		
 		return
+		
+	if !Input.is_action_pressed("right") and !Input.is_action_pressed("left"):
+		
+		hopChargeDir = 0
+		currentMoveState = MoveState.IDLE
+		
+		return
 	
 	if abs(global_rotation_degrees) >= maxHopChargeAngle and sign(global_rotation_degrees) == hopChargeDir:
 		angular_velocity = 0
