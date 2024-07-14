@@ -17,6 +17,7 @@ var currentMoveState : MoveState = MoveState.IDLE :
 @export var groundDetectPivot : Node2D
 @export var groundDetectArea : Area2D
 @export var health : Health
+@export var healthBar : ProgressBar
 
 @export_group("Idle Parameters")
 @export var idleStraightForce : float = 40000
@@ -49,9 +50,12 @@ var currentMoveState : MoveState = MoveState.IDLE :
 
 @export_group("Stomp Parameters")
 @export var stompSpeed : float = 1000
+@export var stompDamage : int = 100
+@export var stompBounceOffEnemyForce : float = 500
 
 @export_group("Misc")
 @export var iFrameTime : float = 3
+@export var iFrameFlashTime : float = .2
 
 var onGround : bool = false
 
@@ -70,6 +74,7 @@ var ogGravity : float = 0
 var hoppedThisFrame : bool = false
 
 var iFrameTimePassed : float = 0
+var iFrameFlashTimePassed : float = 0
 
 
 func _ready() -> void:
@@ -77,10 +82,29 @@ func _ready() -> void:
 	ogFriction = physics_material_override.friction
 	iFrameTimePassed = iFrameTime
 	
+	healthBar.min_value = 0
+	healthBar.max_value = health.max_health
+	
 func _process(delta: float) -> void:
 	
 	groundDetectPivot.global_rotation = 0 # Make sure ground detect area is always facing downward
 	iFrameTimePassed += delta
+	healthBar.value = health.health
+	
+	print(MoveState.keys()[currentMoveState])
+	print(onGround)
+	
+	if iFrameTimePassed < iFrameTime:
+		if iFrameFlashTimePassed >= iFrameFlashTime:
+			anim_sprite.visible = !anim_sprite.visible
+			iFrameFlashTimePassed = 0
+		else:
+			iFrameFlashTimePassed += delta
+		pass
+		
+	else:
+		anim_sprite.visible = true
+		iFrameFlashTimePassed = iFrameFlashTime
 	
 	match currentMoveState:
 		MoveState.IDLE:
@@ -123,7 +147,7 @@ func _physics_process(delta: float) -> void:
 	pass
 	
 	
-func idle(delta : float):
+func idle(_delta : float):
 	
 	if onGround:
 		
@@ -228,6 +252,13 @@ func hop_charge_physics(delta : float):
 		currentMoveState = MoveState.IDLE
 		
 		return
+		
+	if !Input.is_action_pressed("right") and !Input.is_action_pressed("left"):
+		
+		hopChargeDir = 0
+		currentMoveState = MoveState.IDLE
+		
+		return
 	
 	if abs(global_rotation_degrees) >= maxHopChargeAngle and sign(global_rotation_degrees) == hopChargeDir:
 		angular_velocity = 0
@@ -286,15 +317,15 @@ func super_jump_charge(delta : float):
 	if Input.is_action_just_released("jump"):
 		if superJumpChargeTime >= superJumpMinChargeTime:
 			jump(Vector2.UP, calculate_super_jump_force())
+			onGround = false			
 			
 		superJumpChargeTime = 0
-		onGround = false
 		currentMoveState = MoveState.IDLE
 	
 	pass
 	
 	
-func super_jump_charge_physics(delta : float):
+func super_jump_charge_physics(_delta : float):
 	apply_torque(-global_rotation * idleStraightForce * 10)
 	apply_torque(-angular_velocity * idleStraightDamp * 10)
 	pass
@@ -306,7 +337,7 @@ func calculate_super_jump_force():
 	return lerpf(superJumpMinForce, superJumpMaxForce, curveSamp)
 	
 	
-func glide(delta : float):
+func glide(_delta : float):
 	
 	gravity_scale = ogGravity * glideGravityMult # Not best practice, but I don't have time to make
 													# a nice state machine system with enter / exit :(
@@ -331,11 +362,11 @@ func glide_physics(delta : float):
 	pass
 	
 	
-func stomp(delta : float):
+func stomp(_delta : float):
 	pass
 	
 	
-func stomp_physics(delta : float):
+func stomp_physics(_delta : float):
 	
 	if onGround:
 		currentMoveState = MoveState.IDLE
@@ -349,20 +380,21 @@ func jump(dir : Vector2, force : float):
 	
 	
 func on_die():
-	print("dead!")
+	get_tree().call_deferred("change_scene_to_file", "res://Menus/lose_screen.tscn")
+	#get_tree().change_scene_to_file("res://Menus/lose_screen.tscn")
 	pass
 	
 
 # Since terrain will all be on terrain layer, don't need to check collision
-func _on_ground_detect_area_body_entered(body: Node2D) -> void:
+func _on_ground_detect_area_body_entered(_body: Node2D) -> void:
 	onGround = true
 	
 	
-func _on_ground_detect_area_body_exited(body: Node2D) -> void:
+func _on_ground_detect_area_body_exited(_body: Node2D) -> void:
 	onGround = false
 
 
-func _on_hit_box_body_entered(body: Node2D) -> void:
+func _on_hurt_box_body_entered(body: Node2D) -> void:
 	
 	if body is SeedBullet and iFrameTimePassed >= iFrameTime:
 		var bullet = body as SeedBullet
@@ -375,7 +407,10 @@ func _on_hit_box_body_entered(body: Node2D) -> void:
 	pass # Replace with function body.
 
 
-func _on_hit_box_area_entered(area: Area2D) -> void:
+func _on_hurt_box_area_entered(area: Area2D) -> void:
+	
+	if currentMoveState == MoveState.STOMP:
+		return
 	
 	if area is MelonRoller and iFrameTimePassed >= iFrameTime:
 		var melonRoller = area as MelonRoller
@@ -395,3 +430,14 @@ func _on_move_state_changed(previous_state:MoveState, new_state:MoveState):
 	match previous_state:
 		MoveState.SUPER_JUMP_CHARGE:
 			anim_player.play("Jump")
+
+
+func _on_hit_box_area_entered(area: Area2D) -> void:
+	if currentMoveState != MoveState.STOMP:
+		return
+	
+	area.health.take_damage(stompDamage)
+	linear_velocity.y = 0
+	apply_force(stompBounceOffEnemyForce * Vector2.UP)
+	
+	pass # Replace with function body.
