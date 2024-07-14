@@ -91,6 +91,9 @@ func _process(delta: float) -> void:
 	iFrameTimePassed += delta
 	healthBar.value = health.health
 	
+	print(MoveState.keys()[currentMoveState])
+	print(onGround)
+	
 	if iFrameTimePassed < iFrameTime:
 		if iFrameFlashTimePassed >= iFrameFlashTime:
 			anim_sprite.visible = !anim_sprite.visible
@@ -307,9 +310,9 @@ func super_jump_charge(delta : float):
 	if Input.is_action_just_released("jump"):
 		if superJumpChargeTime >= superJumpMinChargeTime:
 			jump(Vector2.UP, calculate_super_jump_force())
+			onGround = false			
 			
 		superJumpChargeTime = 0
-		onGround = false
 		currentMoveState = MoveState.IDLE
 	
 	pass
