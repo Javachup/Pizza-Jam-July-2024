@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="PizzaJam"
-run/main_scene="res://Prototype/Scenes/level1.tscn"
+run/main_scene="res://Art/Scenes/Main_Menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://Prototype/Art/icon.svg"
 
