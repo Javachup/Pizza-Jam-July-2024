@@ -55,6 +55,7 @@ var currentMoveState : MoveState = MoveState.IDLE :
 
 @export_group("Misc")
 @export var iFrameTime : float = 3
+@export var iFrameFlashTime : float = .2
 
 var onGround : bool = false
 
@@ -73,6 +74,7 @@ var ogGravity : float = 0
 var hoppedThisFrame : bool = false
 
 var iFrameTimePassed : float = 0
+var iFrameFlashTimePassed : float = 0
 
 
 func _ready() -> void:
@@ -88,6 +90,18 @@ func _process(delta: float) -> void:
 	groundDetectPivot.global_rotation = 0 # Make sure ground detect area is always facing downward
 	iFrameTimePassed += delta
 	healthBar.value = health.health
+	
+	if iFrameTimePassed < iFrameTime:
+		if iFrameFlashTimePassed >= iFrameFlashTime:
+			anim_sprite.visible = !anim_sprite.visible
+			iFrameFlashTimePassed = 0
+		else:
+			iFrameFlashTimePassed += delta
+		pass
+		
+	else:
+		anim_sprite.visible = true
+		iFrameFlashTimePassed = iFrameFlashTime
 	
 	match currentMoveState:
 		MoveState.IDLE:
