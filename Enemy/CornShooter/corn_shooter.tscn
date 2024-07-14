@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ca87o400v766b" path="res://Art/corn_shooter_sprite.png" id="4_o0m35"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_06sfi"]
-radius = 7.0
+radius = 20.0
 height = 102.0
 
 [sub_resource type="Animation" id="Animation_wipyw"]
