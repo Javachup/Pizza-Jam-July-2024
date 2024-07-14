@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bd0r6gan0773o"]
+[gd_scene load_steps=6 format=3 uid="uid://bd0r6gan0773o"]
 
 [ext_resource type="Texture2D" uid="uid://co6ahd65nrh3f" path="res://Art/title_screen_2.png" id="1_yhn73"]
 [ext_resource type="Script" path="res://Menus/main_menu.gd" id="2_en3tj"]
 [ext_resource type="PackedScene" uid="uid://db5ta8cqxsv8u" path="res://Art/Scenes/button.tscn" id="2_hjugg"]
+[ext_resource type="PackedScene" uid="uid://y1lja75pw0it" path="res://Sounds/Scenes/game_music.tscn" id="4_7d6sq"]
+[ext_resource type="AudioStream" uid="uid://cmbi0ukq37ntd" path="res://Sounds/Music/Scarecrow_DemoTheme_01.mp3" id="5_q2y4r"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -52,6 +54,9 @@ scale = Vector2(0.6, 0.6)
 texture = ExtResource("1_yhn73")
 centered = false
 script = ExtResource("2_en3tj")
+
+[node name="GameMusic" parent="." instance=ExtResource("4_7d6sq")]
+stream = ExtResource("5_q2y4r")
 
 [connection signal="pressed" from="TextureRect/Button" to="TitleScreen2" method="_on_start_button_pressed"]
 [connection signal="pressed" from="TextureRect/Button2" to="TitleScreen2" method="_on_button_2_pressed"]

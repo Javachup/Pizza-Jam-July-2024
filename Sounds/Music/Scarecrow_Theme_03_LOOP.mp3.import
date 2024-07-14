@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/Scarecrow_Theme_03_LOOP.mp3-849d3ab4c5e58eb73
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0
