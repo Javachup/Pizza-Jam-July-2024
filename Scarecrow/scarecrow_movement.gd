@@ -356,7 +356,7 @@ func jump(dir : Vector2, force : float):
 	
 	
 func on_die():
-	print("dead!")
+	get_tree().change_scene_to_file("res://Menus/lose_screen.tscn")
 	pass
 	
 
