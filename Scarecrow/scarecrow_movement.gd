@@ -12,6 +12,12 @@ var currentMoveState : MoveState = MoveState.IDLE :
 
 @onready var anim_sprite = %AnimatedSprite2D
 @onready var anim_player = %AnimationPlayer
+# Audio
+@onready var glide_audio = %Glide
+@onready var charge_jump_audio = %ChargeJump
+@onready var jump_audio = %Jump
+@onready var hit_audio = %Hit
+@onready var stomp_audio = %Stomp
 
 @export_group("References")
 @export var groundDetectPivot : Node2D
@@ -424,13 +430,27 @@ func _on_move_state_changed(previous_state:MoveState, new_state:MoveState):
 			anim_sprite.play("idle")
 		MoveState.GLIDE:
 			anim_sprite.play("glide")
+			glide_audio.play()
 		MoveState.SUPER_JUMP_CHARGE:
 			anim_player.play("Charge")
+			charge_jump_audio.play()
+		MoveState.STOMP:
+			jump_audio.stop()
 	
 	match previous_state:
 		MoveState.SUPER_JUMP_CHARGE:
 			anim_player.play("Jump")
+			charge_jump_audio.stop()
+			jump_audio.play()
+		MoveState.GLIDE:
+			glide_audio.stop()
+		MoveState.HOP_CHARGE:
+			jump_audio.play()
+		MoveState.STOMP:
+			stomp_audio.play()
 
+func _on_health_on_damage():
+	hit_audio.play()
 
 func _on_hit_box_area_entered(area: Area2D) -> void:
 	if currentMoveState != MoveState.STOMP:

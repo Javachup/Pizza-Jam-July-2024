@@ -5,6 +5,7 @@ extends Node
 @onready var health = max_health
 
 signal on_death
+signal on_damage
 
 func take_damage(damage_amount := 1):
 	
@@ -14,3 +15,5 @@ func take_damage(damage_amount := 1):
 	
 	if health <= 0:
 		on_death.emit()
+	else:
+		on_damage.emit()

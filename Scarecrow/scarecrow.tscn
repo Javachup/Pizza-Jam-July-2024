@@ -1,9 +1,14 @@
-[gd_scene load_steps=24 format=3 uid="uid://0wd3a6g2sqqg"]
+[gd_scene load_steps=29 format=3 uid="uid://0wd3a6g2sqqg"]
 
 [ext_resource type="Script" path="res://Scarecrow/scarecrow_movement.gd" id="1_kq6rj"]
 [ext_resource type="Script" path="res://Enemy/health.gd" id="3_v65y4"]
 [ext_resource type="Texture2D" uid="uid://xi5r75vt113i" path="res://Art/scarecrow_idle_sprite_sheet.png" id="3_vljnh"]
 [ext_resource type="Texture2D" uid="uid://cxapnj3dqunbn" path="res://Art/scarecrow_glide_sprite_sheet.png" id="4_s5bvt"]
+[ext_resource type="AudioStream" uid="uid://dgwvv7xpruhwk" path="res://Sounds/SFX/Glide.wav" id="5_nkaec"]
+[ext_resource type="AudioStream" uid="uid://b4rn1med8d2e" path="res://Sounds/SFX/Charge_Jump.wav" id="6_f8nc5"]
+[ext_resource type="AudioStream" uid="uid://s5aoqj2o174r" path="res://Sounds/SFX/Jump.wav" id="7_jwicw"]
+[ext_resource type="AudioStream" uid="uid://cgukmyn4beh3v" path="res://Sounds/SFX/PlayerHit.wav" id="8_4n0pu"]
+[ext_resource type="AudioStream" uid="uid://ves2mnwsdtc0" path="res://Sounds/SFX/Stomp.wav" id="9_tbuqj"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pfaaw"]
 friction = 0.75
@@ -360,8 +365,36 @@ theme_override_styles/background = SubResource("StyleBoxFlat_s2ptm")
 theme_override_styles/fill = SubResource("StyleBoxFlat_dd84m")
 show_percentage = false
 
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Glide" type="AudioStreamPlayer" parent="Sounds"]
+unique_name_in_owner = true
+stream = ExtResource("5_nkaec")
+bus = &"SFX"
+
+[node name="ChargeJump" type="AudioStreamPlayer" parent="Sounds"]
+unique_name_in_owner = true
+stream = ExtResource("6_f8nc5")
+bus = &"SFX"
+
+[node name="Jump" type="AudioStreamPlayer" parent="Sounds"]
+unique_name_in_owner = true
+stream = ExtResource("7_jwicw")
+bus = &"SFX"
+
+[node name="Hit" type="AudioStreamPlayer" parent="Sounds"]
+unique_name_in_owner = true
+stream = ExtResource("8_4n0pu")
+bus = &"SFX"
+
+[node name="Stomp" type="AudioStreamPlayer" parent="Sounds"]
+unique_name_in_owner = true
+stream = ExtResource("9_tbuqj")
+bus = &"SFX"
+
 [connection signal="body_entered" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_entered"]
 [connection signal="body_exited" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_exited"]
+[connection signal="on_damage" from="Health" to="." method="_on_health_on_damage"]
 [connection signal="on_death" from="Health" to="." method="on_die"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurt_box_area_entered"]
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurt_box_body_entered"]
