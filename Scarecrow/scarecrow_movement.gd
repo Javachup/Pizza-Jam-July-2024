@@ -164,6 +164,7 @@ func idle(_delta : float):
 		hopChargeDir = int(Input.is_action_just_pressed("right")) - int(Input.is_action_just_pressed("left"))
 	
 		if hopChargeDir != 0:
+			anim_sprite.flip_h = hopChargeDir > 0
 			currentMoveState = MoveState.HOP_CHARGE
 			return
 			
@@ -172,8 +173,7 @@ func idle(_delta : float):
 			currentMoveState = MoveState.SUPER_JUMP_CHARGE
 			return
 	
-	else:	
-		
+	else:
 		physics_material_override.friction = 0
 		
 		# Check for glide input
@@ -210,6 +210,7 @@ func idle_physics(delta : float):
 		
 	else:
 		var input := int(Input.is_action_pressed("right")) - int(Input.is_action_pressed("left"))
+		anim_sprite.flip_h = input < 0
 		apply_force(Vector2.RIGHT * input * inAirControl * delta)
 		pass
 	
@@ -363,6 +364,7 @@ func glide_physics(delta : float):
 		return
 	
 	var inputDir = int(Input.is_action_pressed("right")) - int(Input.is_action_pressed("left"))
+	anim_sprite.flip_h = inputDir < 0
 	apply_force(Vector2.RIGHT * inputDir * glideSpeed * delta)
 	
 	pass
