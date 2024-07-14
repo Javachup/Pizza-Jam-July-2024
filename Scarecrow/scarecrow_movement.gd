@@ -380,7 +380,8 @@ func jump(dir : Vector2, force : float):
 	
 	
 func on_die():
-	get_tree().change_scene_to_file("res://Menus/lose_screen.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://Menus/lose_screen.tscn")
+	#get_tree().change_scene_to_file("res://Menus/lose_screen.tscn")
 	pass
 	
 

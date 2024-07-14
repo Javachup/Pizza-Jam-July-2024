@@ -1,4 +1,4 @@
-[gd_scene load_steps=151 format=3 uid="uid://0mrs6xn1bcxr"]
+[gd_scene load_steps=153 format=3 uid="uid://0mrs6xn1bcxr"]
 
 [ext_resource type="PackedScene" uid="uid://0wd3a6g2sqqg" path="res://Scarecrow/scarecrow.tscn" id="1_tc3d0"]
 [ext_resource type="TileSet" uid="uid://cup4c8275jnpj" path="res://Art/level_tileset.tres" id="2_447sb"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bm6pte0xpviw6" path="res://Art/crow_sprite.png" id="8_hofgf"]
 [ext_resource type="Texture2D" uid="uid://boc3koex25gbu" path="res://Art/fence_01_sprite.png" id="9_y5vyg"]
 [ext_resource type="Texture2D" uid="uid://dhsc0l6rywsif" path="res://Art/fence_02_sprite.png" id="10_vaj8v"]
+[ext_resource type="Script" path="res://Prototype/Scenes/win_area.gd" id="11_qwkun"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2r2v"]
 size = Vector2(96, 32)
@@ -430,6 +431,9 @@ size = Vector2(96, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_knaea"]
 size = Vector2(64, 1833)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7lasi"]
+size = Vector2(300, 300)
 
 [node name="Node2D" type="Node2D"]
 
@@ -1338,3 +1342,15 @@ texture = ExtResource("9_y5vyg")
 position = Vector2(-2137, -676)
 texture = ExtResource("8_hofgf")
 flip_h = true
+
+[node name="WinArea" type="Area2D" parent="."]
+position = Vector2(-2333, -762)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("11_qwkun")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WinArea"]
+position = Vector2(258, 0)
+shape = SubResource("RectangleShape2D_7lasi")
+
+[connection signal="body_entered" from="WinArea" to="WinArea" method="_on_body_entered"]

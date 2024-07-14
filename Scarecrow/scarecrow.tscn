@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://0wd3a6g2sqqg"]
+[gd_scene load_steps=24 format=3 uid="uid://0wd3a6g2sqqg"]
 
 [ext_resource type="Script" path="res://Scarecrow/scarecrow_movement.gd" id="1_kq6rj"]
 [ext_resource type="Script" path="res://Enemy/health.gd" id="3_v65y4"]
@@ -238,6 +238,12 @@ height = 94.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_uklsa"]
 radius = 15.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2ptm"]
+bg_color = Color(0.811765, 0, 0.164706, 0.203922)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dd84m"]
+bg_color = Color(0.811765, 0.623529, 0.164706, 1)
+
 [node name="ScarecrowStickBottom" type="RigidBody2D" node_paths=PackedStringArray("groundDetectPivot", "groundDetectArea", "health", "healthBar") groups=["ScarecrowBottom"]]
 position = Vector2(0, -9)
 disable_mode = 2
@@ -350,6 +356,9 @@ offset_left = 19.0
 offset_top = 13.0
 offset_right = 306.0
 offset_bottom = 55.0
+theme_override_styles/background = SubResource("StyleBoxFlat_s2ptm")
+theme_override_styles/fill = SubResource("StyleBoxFlat_dd84m")
+show_percentage = false
 
 [connection signal="body_entered" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_entered"]
 [connection signal="body_exited" from="GroundDetectPivot/GroundDetectArea" to="." method="_on_ground_detect_area_body_exited"]
